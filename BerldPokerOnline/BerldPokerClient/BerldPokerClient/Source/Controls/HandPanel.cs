@@ -1,5 +1,5 @@
-﻿using BerldPokerClient.Poker;
-using BerldPokerClient.Properties;
+﻿using BerldPokerClient;
+using BerldPokerClient.Poker;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -34,6 +34,8 @@ namespace BerldPoker.Controls
                 _labelHandNumber.Text += " (D)";
             }
 
+            _labelHandNumber.FitFont();
+
             _labelChips.Text = player.Chips.ToString() + " $";
 
             if (player.Card1 != null && player.Card2 != null)
@@ -63,11 +65,7 @@ namespace BerldPoker.Controls
                 _labelChipsInPot.Text = player.ValueText;
 
                 _labelChipsInPot.Font = new Font("Monotype Corsiva", 14F, FontStyle.Italic, GraphicsUnit.Point, 0);
-
-                while (_labelChipsInPot.Width < TextRenderer.MeasureText(_labelChipsInPot.Text, new Font(_labelChipsInPot.Font.FontFamily, _labelChipsInPot.Font.Size, _labelChipsInPot.Font.Style)).Width)
-                {
-                    _labelChipsInPot.Font = new Font(_labelChipsInPot.Font.FontFamily, _labelChipsInPot.Font.Size - 0.5f, _labelChipsInPot.Font.Style);
-                }
+                _labelChipsInPot.FitFont();
 
                 if (!player.IsWinner)
                 {

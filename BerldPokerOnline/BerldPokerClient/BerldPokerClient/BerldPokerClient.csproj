@@ -56,6 +56,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Source\Controls\HandPanel.cs" />
+    <Compile Include="Source\Extensions.cs" />
     <Compile Include="Source\Poker\Card.cs" />
     <Compile Include="Source\Poker\CardImageProvider.cs" />
     <Compile Include="Source\Poker\PokerPlayer.cs" />

@@ -144,7 +144,7 @@
             this._buttonFold.BackColor = System.Drawing.Color.Transparent;
             this._buttonFold.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this._buttonFold.Enabled = false;
-            this._buttonFold.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._buttonFold.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._buttonFold.ForeColor = System.Drawing.SystemColors.ControlText;
             this._buttonFold.Location = new System.Drawing.Point(12, 522);
             this._buttonFold.Name = "_buttonFold";
@@ -160,7 +160,7 @@
             this._buttonCheckCall.BackColor = System.Drawing.Color.Transparent;
             this._buttonCheckCall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this._buttonCheckCall.Enabled = false;
-            this._buttonCheckCall.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._buttonCheckCall.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._buttonCheckCall.ForeColor = System.Drawing.SystemColors.ControlText;
             this._buttonCheckCall.Location = new System.Drawing.Point(128, 522);
             this._buttonCheckCall.Name = "_buttonCheckCall";
@@ -176,7 +176,7 @@
             this._buttonBetRaise.BackColor = System.Drawing.Color.Transparent;
             this._buttonBetRaise.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this._buttonBetRaise.Enabled = false;
-            this._buttonBetRaise.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._buttonBetRaise.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._buttonBetRaise.ForeColor = System.Drawing.SystemColors.ControlText;
             this._buttonBetRaise.Location = new System.Drawing.Point(244, 522);
             this._buttonBetRaise.Name = "_buttonBetRaise";
@@ -218,7 +218,7 @@
             this._buttonDeal.BackColor = System.Drawing.Color.Transparent;
             this._buttonDeal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this._buttonDeal.Enabled = false;
-            this._buttonDeal.Font = new System.Drawing.Font("Arial Unicode MS", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._buttonDeal.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._buttonDeal.ForeColor = System.Drawing.SystemColors.ControlText;
             this._buttonDeal.Location = new System.Drawing.Point(667, 522);
             this._buttonDeal.Name = "_buttonDeal";
