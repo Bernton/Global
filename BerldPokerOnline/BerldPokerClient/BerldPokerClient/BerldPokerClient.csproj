@@ -81,6 +81,7 @@
     </Compile>
     <EmbeddedResource Include="Source\Controls\HandPanel.resx">
       <DependentUpon>HandPanel.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Source\Views\FormTable.resx">
       <DependentUpon>FormTable.cs</DependentUpon>

@@ -9,7 +9,9 @@ namespace BerldPoker.Controls
     [DesignerCategory("")]
     public class HandPanel : Panel
     {
-        //private Label _labelCard1;
+        
+        
+        private Label _labelCard1;
         //private Label _labelCard2;
         private PictureBox _pictureBoxCard1;
         private PictureBox _pictureBoxCard2;

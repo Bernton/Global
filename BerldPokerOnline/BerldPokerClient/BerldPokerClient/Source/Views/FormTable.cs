@@ -399,9 +399,14 @@ namespace BerldPokerClient.Views
 
         private void UpdateHandPanel()
         {
-            _panelHands.Controls.Clear();
-
             int horizontalSpots = _panelHands.Width / 240;
+
+            if(horizontalSpots <= 0)
+            {
+                return;
+            }
+
+            _panelHands.Controls.Clear();
 
             for (int i = 0; i < _table.Players.Count; i++)
             {
