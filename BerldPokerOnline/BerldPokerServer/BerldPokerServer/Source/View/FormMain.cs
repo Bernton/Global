@@ -224,9 +224,6 @@ namespace BerldPokerServer.View
                 case "Deal":
 
                     affectedTable.StartNewRound();
-                    affectedTable.BetRaise(affectedTable.SmallBlind);
-                    affectedTable.BetRaise(affectedTable.BigBlind);
-                    affectedTable.BigBlindException = true;
 
                     for (int i = 0; i < affectedTable.Players.Count; i++)
                     {
