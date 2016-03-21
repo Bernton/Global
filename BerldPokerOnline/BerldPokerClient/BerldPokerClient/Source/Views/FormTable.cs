@@ -40,7 +40,7 @@ namespace BerldPokerClient.Views
             _client.ReceivedMessage += OnServerMessageReceived;
 
             InitializeUI();
-            UpdateGUI();
+            UpdateUI();
         }
 
         public FormTable(UtilityClient client, PokerTable table)
@@ -57,7 +57,7 @@ namespace BerldPokerClient.Views
             _client.ReceivedMessage += OnServerMessageReceived;
 
             InitializeUI();
-            UpdateGUI();
+            UpdateUI();
         }
 
         private void InitializeUI()
@@ -132,10 +132,6 @@ namespace BerldPokerClient.Views
                     _table.StartNewRound();
                     _player.Card1 = card1;
                     _player.Card2 = card2;
-
-                    _table.BetRaise(_table.SmallBlind);
-                    _table.BetRaise(_table.BigBlind);
-                    _table.BigBlindException = true;
                     break;
 
                 case "Fold":
@@ -177,12 +173,7 @@ namespace BerldPokerClient.Views
 
                 case "Finish":
 
-                    //string tableData = message.Substring(args[0].Length + 1);
-                    //XmlSerializer serializer = new XmlSerializer(typeof(PokerTable));
-                    //PokerTable table = (PokerTable)serializer.Deserialize(new StringReader(tableData));
-
                     string rankingData = args[1];
-
                     string[] cardTextPairs = args[2].Split('|');
 
                     string[] valueTexts = new string[cardTextPairs.Length / 5];
@@ -202,7 +193,7 @@ namespace BerldPokerClient.Views
                     break;
             }
 
-            UpdateGUI();
+            UpdateUI();
         }
 
         private void OnFormTable_FormClosing(object sender, FormClosingEventArgs e)
@@ -224,7 +215,7 @@ namespace BerldPokerClient.Views
             _client.SendMessage("Fold");
             _table.Fold();
 
-            UpdateGUI();
+            UpdateUI();
         }
 
         private void On_buttonCheckCall_Click(object sender, EventArgs e)
@@ -232,7 +223,7 @@ namespace BerldPokerClient.Views
             _client.SendMessage("CheckCall");
             _table.CheckCall();
 
-            UpdateGUI();
+            UpdateUI();
         }
 
         private void On_buttonBetRaise_Click(object sender, EventArgs e)
@@ -240,17 +231,23 @@ namespace BerldPokerClient.Views
             int bet;
             bool isValidNumber = int.TryParse(_textBoxChips.Text, out bet);
 
-            if (isValidNumber && bet >= _table.ChipsToCall + _table.BigBlind - _player.ChipsInPot)
+            if (isValidNumber)
             {
-                if(bet > _player.Chips)
+                if(bet < _table.ChipsToCall + _table.BigBlind)
                 {
-                    bet = _player.Chips;
+                    MessageBox.Show("Bet/Raise To by atleast one Big Blind.", "Berld Poker", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if(bet > _player.TotalChips)
+                {
+                    bet = _player.TotalChips;
                 }
 
                 _client.SendMessage($"BetRaise;{bet}");
                 _table.BetRaise(bet);
 
-                UpdateGUI();
+                UpdateUI();
             }
             else
             {
@@ -269,13 +266,16 @@ namespace BerldPokerClient.Views
 
             if (int.TryParse(_textBoxChips.Text, out input))
             {
-                if (input > _player.Chips)
+                if (input >= _player.TotalChips)
                 {
                     _buttonBetRaise.Text = "Raise All In";
                 }
                 else
                 {
-                    _buttonBetRaise.Text = "Bet / Raise";
+                    if (_buttonBetRaise.Text == "Raise All In")
+                    {
+                        UpdateUI();
+                    }
                 }
             }
         }
@@ -284,7 +284,7 @@ namespace BerldPokerClient.Views
 
         #region User interface methods
 
-        private void UpdateGUI()
+        private void UpdateUI()
         {
             UpdateHandPanel();
 
@@ -294,7 +294,7 @@ namespace BerldPokerClient.Views
             {
                 _buttonDeal.Enabled = true;
             }
-            else if(_table.Players.Count < 2)
+            else if(_table.Players.Count(c => c.Chips != 0) < 2)
             {
                 Text = "BerldPoker Client (Waiting for player)";
                 _buttonDeal.Enabled = false;
@@ -359,7 +359,6 @@ namespace BerldPokerClient.Views
                 if (_player.Chips + _player.ChipsInPot <= _table.ChipsToCall)
                 {
                     _buttonCheckCall.Text = "All In";
-                    _buttonBetRaise.Text = "Bet / Raise";
                     _buttonBetRaise.Enabled = false;
                 }
                 else 
@@ -379,7 +378,7 @@ namespace BerldPokerClient.Views
                     }
                     else
                     {
-                        _buttonBetRaise.Text = "Raise";
+                        _buttonBetRaise.Text = "Raise to";
                     }
 
                     _buttonBetRaise.Enabled = true;

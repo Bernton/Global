@@ -124,6 +124,10 @@ namespace BerldPokerClient.Poker
             ToAct = GetNextActive(DealerPosition);
 
             _lastToAct = GetLastToAct();
+
+            BetRaise(SmallBlind);
+            BetRaise(BigBlind);
+            BigBlindException = true;
         }
 
         private int GetNextActive(int startingPoint)
@@ -292,17 +296,19 @@ namespace BerldPokerClient.Poker
                 return;
             }
 
-            BetRaise(ChipsToCall - Players[ToAct].ChipsInPot);
+            BetRaise(ChipsToCall);
         }
 
         public void BetRaise(int chips)
         {
             if (ToAct < 0) return;
 
-            Players[ToAct].Chips -= chips;
-            Players[ToAct].ChipsInPot += chips;
+            ChipsToCall = chips;
 
-            ChipsToCall = Players[ToAct].ChipsInPot;
+            int difference = ChipsToCall - Players[ToAct].ChipsInPot;
+
+            Players[ToAct].Chips -= difference;
+            Players[ToAct].ChipsInPot += difference;
 
             NextToAct();
         }

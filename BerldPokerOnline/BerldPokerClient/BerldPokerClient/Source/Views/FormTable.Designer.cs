@@ -166,7 +166,7 @@
             this._buttonCheckCall.Name = "_buttonCheckCall";
             this._buttonCheckCall.Size = new System.Drawing.Size(110, 38);
             this._buttonCheckCall.TabIndex = 50;
-            this._buttonCheckCall.Text = "Check / Call";
+            this._buttonCheckCall.Text = "Call";
             this._buttonCheckCall.UseVisualStyleBackColor = false;
             this._buttonCheckCall.Click += new System.EventHandler(this.On_buttonCheckCall_Click);
             // 
@@ -182,7 +182,7 @@
             this._buttonBetRaise.Name = "_buttonBetRaise";
             this._buttonBetRaise.Size = new System.Drawing.Size(110, 38);
             this._buttonBetRaise.TabIndex = 51;
-            this._buttonBetRaise.Text = "Bet / Raise";
+            this._buttonBetRaise.Text = "Bet";
             this._buttonBetRaise.UseVisualStyleBackColor = false;
             this._buttonBetRaise.Click += new System.EventHandler(this.On_buttonBetRaise_Click);
             // 
