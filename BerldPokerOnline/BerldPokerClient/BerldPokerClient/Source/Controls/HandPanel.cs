@@ -9,41 +9,33 @@ namespace BerldPoker.Controls
     [DesignerCategory("")]
     public class HandPanel : Panel
     {
-        
-        
-        private Label _labelCard1;
-        //private Label _labelCard2;
         private PictureBox _pictureBoxCard1;
         private PictureBox _pictureBoxCard2;
         private Label _labelChips;
         private Label _labelChipsInPot;
-        private Label _labelHandNumber;
+        private Label _labelName;
         private Label _labelHandValue;
 
         public HandPanel(PokerPlayer player, bool toAct, bool isDealer)
         {
-            InitializeComponent();
-
             BackColor = Color.Transparent;
-
             Size = new Size(240, 230);
             Enabled = !player.IsFolded;
 
-            _labelHandNumber.Text = player.Name;
+            InitializeComponent();
+
+            _labelName.Text = player.Name;
 
             if (isDealer)
             {
-                _labelHandNumber.Text += " (D)";
+                _labelName.Text += " (D)";
             }
 
-            _labelHandNumber.FitFont();
-
+            _labelName.FitFont();
             _labelChips.Text = player.Chips.ToString() + " $";
 
             if (player.Card1 != null && player.Card2 != null)
             {
-                //_labelCard1.Text = player.Card1.ToString();
-                //_labelCard2.Text = player.Card2.ToString();
                 _pictureBoxCard1.Image = CardImageProvider.GetImageFromCard(player.Card1);
                 _pictureBoxCard2.Image = CardImageProvider.GetImageFromCard(player.Card2);
             }
@@ -83,29 +75,17 @@ namespace BerldPoker.Controls
 
         private void InitializeComponent()
         {
-            //_labelCard1 = new Label();
-            //_labelCard2 = new Label();
             _pictureBoxCard1 = new PictureBox();
             _pictureBoxCard2 = new PictureBox();
             _labelChips = new Label();
             _labelChipsInPot = new Label();
-            _labelHandNumber = new Label();
+            _labelName = new Label();
             _labelHandValue = new Label();
 
             ((ISupportInitialize)_pictureBoxCard2).BeginInit();
             ((ISupportInitialize)_pictureBoxCard1).BeginInit();
 
             SuspendLayout();
-
-            //_labelCard1.AutoSize = true;
-            //_labelCard1.Location = new Point(18, 135);
-            //_labelCard1.BackColor = Color.Transparent;
-            //_labelCard1.Font = new Font("Arial Unicode MS", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
-
-            //_labelCard2.AutoSize = true;
-            //_labelCard2.Location = new Point(116, 135);
-            //_labelCard2.BackColor = Color.Transparent;
-            //_labelCard2.Font = new Font("Arial Unicode MS", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
             _pictureBoxCard1.Location = new Point(30, 40);
             _pictureBoxCard1.Size = new Size(82, 118);
@@ -125,10 +105,10 @@ namespace BerldPoker.Controls
             _labelChipsInPot.TextAlign = ContentAlignment.MiddleCenter;
             _labelChipsInPot.Font = new Font("Arial Unicode MS", 12.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
 
-            _labelHandNumber.Location = new Point(30, 195);
-            _labelHandNumber.Size = new Size(174, 25);
-            _labelHandNumber.TextAlign = ContentAlignment.MiddleCenter;
-            _labelHandNumber.Font = new Font("Arial Unicode MS", 12.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            _labelName.Location = new Point(30, 195);
+            _labelName.Size = new Size(174, 25);
+            _labelName.TextAlign = ContentAlignment.MiddleCenter;
+            _labelName.Font = new Font("Arial Unicode MS", 12.5F, FontStyle.Bold, GraphicsUnit.Point, 0);
 
             _labelHandValue.Location = new Point(35, 2);
             _labelHandValue.Size = new Size(174, 60);
@@ -140,13 +120,11 @@ namespace BerldPoker.Controls
 
             ResumeLayout(false);
 
-            //Controls.Add(_labelCard1);
-            //Controls.Add(_labelCard2);
             Controls.Add(_pictureBoxCard1);
             Controls.Add(_pictureBoxCard2);
             Controls.Add(_labelChips);
             Controls.Add(_labelChipsInPot);
-            Controls.Add(_labelHandNumber);
+            Controls.Add(_labelName);
             Controls.Add(_labelHandValue);
         }
     }

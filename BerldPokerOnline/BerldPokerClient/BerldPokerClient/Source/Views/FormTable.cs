@@ -286,9 +286,9 @@ namespace BerldPokerClient.Views
 
         private void UpdateGUI()
         {
-            Text = "BerldPoker Client";
-
             UpdateHandPanel();
+
+            Text = "BerldPoker Client";
 
             if (_table.Players.Where(c => c.Chips > 0).ToArray().Length >= 2 && _table.ToAct == -1 && _player.Chips > 0)
             {
