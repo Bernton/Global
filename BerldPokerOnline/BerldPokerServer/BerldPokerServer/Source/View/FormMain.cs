@@ -99,6 +99,7 @@ namespace BerldPokerServer.View
             string[] args = message.Split(';');
             PokerPlayer player;
             PokerTable table;
+            int tableIndex;
 
             PokerPlayer currentPlayer = PokerSalon.Players.FirstOrDefault(c => c.Name == userNameSource);
             PokerTable affectedTable = PokerSalon.Tables.FirstOrDefault(c => c.Players.Contains(currentPlayer));
@@ -137,8 +138,6 @@ namespace BerldPokerServer.View
 
                 case "JoinTable":
 
-                    int tableIndex;
-
                     if (int.TryParse(args[1], out tableIndex))
                     {
                         if (tableIndex >= 0 && tableIndex < PokerSalon.Tables.Count)
@@ -157,6 +156,12 @@ namespace BerldPokerServer.View
                                     _server.SendMessage(name, $"NewPlayer;{userNameSource}");
                                 }
 
+                                for (int i = 0; i < PokerSalon.Tables[tableIndex].Observers.Count; i++)
+                                {
+                                    string name = PokerSalon.Tables[tableIndex].Observers[i].Name;
+                                    _server.SendMessage(name, $"NewPlayer;{userNameSource}");
+                                }
+
                                 player = new PokerPlayer(userNameSource);
 
                                 string tableData = $"TableJoined;{Serialize(PokerSalon.Tables[tableIndex])}";
@@ -170,6 +175,53 @@ namespace BerldPokerServer.View
                                 _server.SendMessage(userNameSource, "TableFullError");
                                 return;
                             }
+
+                            UpdateTableListBox();
+                            return;
+                        }
+
+                        _server.SendMessage(userNameSource, "TableNotExistError");
+                        return;
+                    }
+
+                    _server.SendMessage(userNameSource, "InvalidOperation");
+
+                    break;
+
+                case "JoinTableObserver":
+
+                    if (int.TryParse(args[1], out tableIndex))
+                    {
+                        if (tableIndex >= 0 && tableIndex < PokerSalon.Tables.Count)
+                        {
+                            string tableData = "";
+
+                            lock (PokerSalon.Tables[tableIndex])
+                            {
+                                Card[] cards = new Card[PokerSalon.Tables[tableIndex].Players.Count * 2];
+
+                                for (int i = 0; i < PokerSalon.Tables[tableIndex].Players.Count; i++)
+                                {
+                                    cards[i * 2] = PokerSalon.Tables[tableIndex].Players[i].Card1;
+                                    cards[i * 2 + 1] = PokerSalon.Tables[tableIndex].Players[i].Card2;
+
+                                    PokerSalon.Tables[tableIndex].Players[i].Card1 = null;
+                                    PokerSalon.Tables[tableIndex].Players[i].Card2 = null;
+                                }
+
+                                tableData = $"TableJoinedObserver;{Serialize(PokerSalon.Tables[tableIndex])}";
+
+                                for (int i = 0; i < PokerSalon.Tables[tableIndex].Players.Count; i++)
+                                {
+                                    PokerSalon.Tables[tableIndex].Players[i].Card1 = cards[i * 2];
+                                    PokerSalon.Tables[tableIndex].Players[i].Card2 = cards[i * 2 + 1];
+                                }
+                            }
+
+                            tableData = tableData.Replace(Environment.NewLine, "");
+                            _server.SendMessage(userNameSource, tableData);
+
+                            PokerSalon.Tables[tableIndex].Observers.Add(new Observer() { Name = userNameSource });
 
                             UpdateTableListBox();
                             return;
@@ -235,11 +287,16 @@ namespace BerldPokerServer.View
                         _server.SendMessage(affectedTable.Players[i].Name, cardInfo);
                     }
 
+                    for (int i = 0; i < affectedTable.Observers.Count; i++)
+                    {
+                        _server.SendMessage(affectedTable.Observers[i].Name, "Deal");
+                    }
+
                     break;
 
                 case "Fold":
 
-                    SendToAllExceptToAce(affectedTable, "Fold");
+                    SendToAllExceptToAct(affectedTable, "Fold");
                     affectedTable.Fold();
 
 
@@ -248,7 +305,7 @@ namespace BerldPokerServer.View
 
                 case "CheckCall":
 
-                    SendToAllExceptToAce(affectedTable, "CheckCall");
+                    SendToAllExceptToAct(affectedTable, "CheckCall");
                     affectedTable.CheckCall();
 
 
@@ -257,7 +314,7 @@ namespace BerldPokerServer.View
 
                 case "BetRaise":
 
-                    SendToAllExceptToAce(affectedTable, $"BetRaise;{args[1]}");
+                    SendToAllExceptToAct(affectedTable, $"BetRaise;{args[1]}");
                     affectedTable.BetRaise(int.Parse(args[1]));
 
 
@@ -353,9 +410,14 @@ namespace BerldPokerServer.View
 
                 _server.SendMessage(table.Players[i].Name, message);
             }
+
+            for (int i = 0; i < table.Observers.Count; i++)
+            {
+                _server.SendMessage(table.Observers[i].Name, message);
+            }
         }
 
-        private void SendToAllExceptToAce(PokerTable table, string message)
+        private void SendToAllExceptToAct(PokerTable table, string message)
         {
             for (int i = 0; i < table.Players.Count; i++)
             {
@@ -366,6 +428,11 @@ namespace BerldPokerServer.View
 
                 _server.SendMessage(table.Players[i].Name, message);
             }
+
+            for (int i = 0; i < table.Observers.Count; i++)
+            {
+                _server.SendMessage(table.Observers[i].Name, message);
+            }
         }
 
         private void SendToAll(PokerTable table, string message)
@@ -373,6 +440,11 @@ namespace BerldPokerServer.View
             for (int i = 0; i < table.Players.Count; i++)
             {
                 _server.SendMessage(table.Players[i].Name, message);
+            }
+
+            for (int i = 0; i < table.Observers.Count; i++)
+            {
+                _server.SendMessage(table.Observers[i].Name, message);
             }
         }
 
@@ -383,7 +455,7 @@ namespace BerldPokerServer.View
                 return;
             }
 
-            if(table.Players.Count(c => c.IsFolded == false) == 0)
+            if (table.Players.Count(c => c.IsFolded == false) == 0)
             {
                 PokerSalon.Tables.Remove(table);
             }
@@ -425,7 +497,7 @@ namespace BerldPokerServer.View
                 PokerPlayer[] showDownPlayers = table.Players.Where(c => c.IsFolded == false).ToArray();
                 IHandValue[] showDownValues = new IHandValue[showDownPlayers.Length];
 
-                if(showDownPlayers.Length == 0)
+                if (showDownPlayers.Length == 0)
                 {
                     PokerSalon.Tables.Remove(table);
                     return;

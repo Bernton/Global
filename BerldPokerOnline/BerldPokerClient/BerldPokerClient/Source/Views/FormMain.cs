@@ -110,7 +110,22 @@ namespace BerldPokerClient.Views
                     PokerTable table = (PokerTable)serializer.Deserialize(new StringReader(tableData));
 
                     Visible = false;
-                    _table = new FormTable(_client, table);
+                    _table = new FormTable(_client, table, false);
+                    _table.FormClosed += OnTableClosed;
+                    _table.Show();
+
+                    break;
+
+                case "TableJoinedObserver":
+
+                    _client.ReceivedMessage -= OnServerMessageReceived;
+
+                    string tableDataObs = message.Substring(args[0].Length + 1);
+                    XmlSerializer serializerObs = new XmlSerializer(typeof(PokerTable));
+                    PokerTable tableObs = (PokerTable)serializerObs.Deserialize(new StringReader(tableDataObs));
+
+                    Visible = false;
+                    _table = new FormTable(_client, tableObs, true);
                     _table.FormClosed += OnTableClosed;
                     _table.Show();
 
@@ -194,5 +209,18 @@ namespace BerldPokerClient.Views
         }
 
         #endregion
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (_listBoxTables.SelectedIndex != -1)
+            {
+                _client.SendMessage($"JoinTableObserver;{_listBoxTables.SelectedIndex}");
+                Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Nothing selected.", "Table Manager", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

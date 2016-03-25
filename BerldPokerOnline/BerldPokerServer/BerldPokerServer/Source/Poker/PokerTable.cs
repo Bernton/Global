@@ -10,6 +10,9 @@ namespace BerldPokerServer.Poker
         #region Fields and properties
 
         [NonSerialized]
+        private List<Observer> _observers = new List<Observer>();
+
+        [NonSerialized]
         private readonly Deck _deck = new Deck();
 
         [NonSerialized]
@@ -24,13 +27,22 @@ namespace BerldPokerServer.Poker
         public int ToAct { get; set; } = -1;
 
         public int ChipsToCall { get; set; }
-        private List<Pot> _pots = new List<Pot>();
+
+        public List<Pot> Pots { get; set; } = new List<Pot>();
 
         public bool BigBlindException { get; set; } = true;
 
         public Card[] Flop { get; set; }
         public Card Turn { get; set; }
         public Card River { get; set; }
+
+        public List<Observer> Observers
+        {
+            get
+            {
+                return _observers;
+            }
+        }
 
         public bool HasFreeSeats
         {
@@ -58,7 +70,7 @@ namespace BerldPokerServer.Poker
                     }
                 }
 
-                if (ChipsToCall == 0 && ToAct != _lastToAct && !Array.TrueForAll(Players.ToArray(), c => c.Chips == 0))
+                if (ChipsToCall == 0 && ToAct != GetLastToAct(_lastToAct) && !Array.TrueForAll(Players.ToArray(), c => c.Chips == 0))
                 {
                     return false;
                 }
@@ -123,7 +135,7 @@ namespace BerldPokerServer.Poker
                 Players[i].Card2 = _deck.Cards[i * 2 + 6];
             }
 
-            _pots.Add(new Pot());
+            Pots.Add(new Pot());
 
             Flop = null;
             Turn = null;
@@ -163,12 +175,12 @@ namespace BerldPokerServer.Poker
         {
             BigBlindException = false;
 
-            isEarly = Players.Count(c => c.Chips > 0 && c.IsFolded == false) < 2;
+            isEarly = Players.Count(c => c.Chips != 0 && c.IsFolded == false) < 2;
 
             ChipsToCall = 0;
             ToAct = GetNextActive(DealerPosition);
 
-            _lastToAct = GetLastToAct();
+            _lastToAct = GetLastToAct(DealerPosition % Players.Count);
 
             int first = -1;
 
@@ -207,22 +219,20 @@ namespace BerldPokerServer.Poker
             return first;
         }
 
-        private int GetLastToAct()
+        private int GetLastToAct(int startingPoint)
         {
-            int possibleToAct = DealerPosition % Players.Count;
-
             for (int i = 0; i < Players.Count; i++)
             {
-                if (!Players[possibleToAct].IsFolded)
+                if (!Players[startingPoint].IsFolded && Players[startingPoint].Chips > 0)
                 {
-                    return possibleToAct;
+                    return startingPoint;
                 }
 
-                possibleToAct -= 1;
+                startingPoint -= 1;
 
-                if (possibleToAct == -1)
+                if (startingPoint == -1)
                 {
-                    possibleToAct = Players.Count - 1;
+                    startingPoint = Players.Count - 1;
                 }
             }
 
@@ -253,7 +263,7 @@ namespace BerldPokerServer.Poker
 
                 if (i > 0 && currentChipsInPot == 0)
                 {
-                    _pots[1].IndexexToWinFor.Add(Players.IndexOf(playersAllIn[i]));
+                    Pots[1].IndexexToWinFor.Add(Players.IndexOf(playersAllIn[i]));
                     continue;
                 }
 
@@ -262,8 +272,8 @@ namespace BerldPokerServer.Poker
                 
                 if(i == playersAllIn.Length - 1)
                 {
-                    pot.Chips += _pots[0].Chips;
-                    _pots[0].Chips = 0;
+                    pot.Chips += Pots[0].Chips;
+                    Pots[0].Chips = 0;
                 }
 
                 foreach (PokerPlayer player in Players)
@@ -288,13 +298,13 @@ namespace BerldPokerServer.Poker
                 else
                 {
                     pot.IndexexToWinFor.Add(Players.IndexOf(playersAllIn[i]));
-                    _pots.Insert(1, pot);
+                    Pots.Insert(1, pot);
                 }
             }
 
             foreach (PokerPlayer player in Players)
             {
-                _pots[0].Chips += player.ChipsInPot;
+                Pots[0].Chips += player.ChipsInPot;
                 player.ChipsInPot = 0;
             }
 
@@ -311,14 +321,14 @@ namespace BerldPokerServer.Poker
             {
                 foreach (PokerPlayer player in Players)
                 {
-                    _pots[0].Chips += player.ChipsInPot;
+                    Pots[0].Chips += player.ChipsInPot;
                     player.ChipsInPot = 0;
                 }
 
                 result[0].IsWinner = true;
-                result[0].Chips += _pots[0].Chips;
+                result[0].Chips += Pots[0].Chips;
 
-                _pots.Clear();
+                Pots.Clear();
                 ToAct = -2;
 
                 return;
@@ -359,7 +369,7 @@ namespace BerldPokerServer.Poker
         {
             foreach (PokerPlayer player in Players)
             {
-                _pots[0].Chips += player.ChipsInPot;
+                Pots[0].Chips += player.ChipsInPot;
                 player.ChipsInPot = 0;
             }
 
@@ -372,17 +382,17 @@ namespace BerldPokerServer.Poker
 
             // MANAGE WHO GETS WHAT
 
-            for (int potI = (_pots.Count - 1); potI > 0; potI--)
+            for (int potI = (Pots.Count - 1); potI > 0; potI--)
             {
-                int chipsToGet = _pots[potI].Chips / ranking[0].Count;
+                int chipsToGet = Pots[potI].Chips / ranking[0].Count;
                 bool anyWinner = false;
 
                 for (int sameI = 0; sameI < ranking[0].Count; sameI++)
                 {
-                    if (_pots[potI].IndexexToWinFor.Contains(ranking[0][sameI]))
+                    if (Pots[potI].IndexexToWinFor.Contains(ranking[0][sameI]))
                     {
                         Players[ranking[0][sameI]].Chips += chipsToGet;
-                        _pots[potI].Chips -= chipsToGet;
+                        Pots[potI].Chips -= chipsToGet;
 
                         Players[ranking[0][sameI]].HasCashed = true;
 
@@ -390,7 +400,7 @@ namespace BerldPokerServer.Poker
                     }
                 }
 
-                if (!anyWinner) _pots[potI - 1].Chips += _pots[potI].Chips;
+                if (!anyWinner) Pots[potI - 1].Chips += Pots[potI].Chips;
             }
 
             for (int rankI = 0; rankI < ranking.Count; rankI++)
@@ -407,7 +417,7 @@ namespace BerldPokerServer.Poker
 
                 if (mainPotWinnsers > 0)
                 {
-                    int chipsToGet = _pots[0].Chips / mainPotWinnsers;
+                    int chipsToGet = Pots[0].Chips / mainPotWinnsers;
 
                     for (int sameI = 0; sameI < ranking[rankI].Count; sameI++)
                     {
@@ -431,7 +441,7 @@ namespace BerldPokerServer.Poker
                 player.ChipsInPot = 0;
             }
 
-            _pots.Clear();
+            Pots.Clear();
             ToAct = -1;
         }
 
