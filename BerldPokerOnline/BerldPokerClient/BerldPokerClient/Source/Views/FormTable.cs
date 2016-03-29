@@ -431,7 +431,7 @@ namespace BerldPokerClient.Views
             {
                 bool isHidden = false;
 
-                if (i == _playerIndex && _hiddenMode)
+                if (i == _playerIndex && _hiddenMode && _table.ToAct != -1)
                 {
                     isHidden = true;
                 }
