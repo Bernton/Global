@@ -288,11 +288,13 @@
             this.Controls.Add(this._labelSHOWTurn);
             this.Controls.Add(this._labelSHOWFlop);
             this.DoubleBuffered = true;
+            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(814, 609);
             this.Name = "FormTable";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BerldPoker Client";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormTable_FormClosing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnFormTable_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this._pictureBoxRiver)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBoxTurn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._pictureBoxFlop3)).EndInit();

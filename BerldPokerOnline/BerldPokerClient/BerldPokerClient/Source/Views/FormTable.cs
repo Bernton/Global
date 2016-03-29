@@ -17,13 +17,12 @@ namespace BerldPokerClient.Views
         #region Fields
 
         private UtilityClient _client;
-
         private PokerTable _table;
         private PokerPlayer _player;
 
         private int _playerIndex;
-
         private bool _isObserver = false;
+        private bool _hiddenMode = false;
 
         #endregion
 
@@ -51,16 +50,16 @@ namespace BerldPokerClient.Views
 
             _table = table;
 
-                _player = new PokerPlayer("You");
-                _player.Chips = 1000;
-                _player.IsFolded = true;
+            _player = new PokerPlayer("You");
+            _player.Chips = 1000;
+            _player.IsFolded = true;
+            _playerIndex = -1;
 
             if (!asObserver)
             {
                 _table.Players.Add(_player);
+                _playerIndex = _table.Players.Count - 1;
             }
-
-            _playerIndex = -1;
 
             _client = client;
             _client.ReceivedMessage += OnServerMessageReceived;
@@ -78,6 +77,19 @@ namespace BerldPokerClient.Views
         #endregion
 
         #region Event methods
+
+        private void OnFormTable_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.H)
+            {
+                _hiddenMode = !_hiddenMode;
+
+                UpdateGUI();
+
+                e.SuppressKeyPress = true;
+                e.Handled = true;
+            }
+        }
 
         private void OnServerMessageReceived(string source, string message)
         {
@@ -143,9 +155,6 @@ namespace BerldPokerClient.Views
                         _player.Card2 = new Card((CardValue)int.Parse(args[3]), (CardSuit)int.Parse(args[4]));
                     }
 
-                    _table.BetRaise(_table.SmallBlind);
-                    _table.BetRaise(_table.BigBlind);
-                    _table.BigBlindException = true;
                     break;
 
                 case "Fold":
@@ -420,7 +429,14 @@ namespace BerldPokerClient.Views
 
             for (int i = 0; i < _table.Players.Count; i++)
             {
-                HandPanel handPanel = new HandPanel(_table.Players[i], i == _table.ToAct, i == _table.DealerPosition);
+                bool isHidden = false;
+
+                if (i == _playerIndex && _hiddenMode)
+                {
+                    isHidden = true;
+                }
+
+                HandPanel handPanel = new HandPanel(_table.Players[i], i == _table.ToAct, i == _table.DealerPosition, isHidden);
                 handPanel.Location = new Point((i % horizontalSpots) * 240, (i / horizontalSpots) * 230);
 
                 _panelHands.Controls.Add(handPanel);

@@ -61,11 +61,11 @@
     <Compile Include="Source\Poker\IHandValue\FullHouse.cs" />
     <Compile Include="Source\Poker\IHandValue\HighCard.cs" />
     <Compile Include="Source\Poker\IHandValue\IHandValue.cs" />
-    <Compile Include="Source\Poker\Observer.cs" />
     <Compile Include="Source\Poker\IHandValue\Pair.cs" />
     <Compile Include="Source\Poker\IHandValue\Straight.cs" />
     <Compile Include="Source\Poker\IHandValue\StraightFlush.cs" />
     <Compile Include="Source\Poker\IHandValue\TreeOfAKind.cs" />
+    <Compile Include="Source\Poker\Observer.cs" />
     <Compile Include="Source\Poker\PokerEngine.cs" />
     <Compile Include="Source\Poker\PokerPlayer.cs" />
     <Compile Include="Source\Poker\PokerSalon.cs" />

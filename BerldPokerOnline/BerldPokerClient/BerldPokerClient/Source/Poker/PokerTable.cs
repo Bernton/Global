@@ -18,7 +18,7 @@ namespace BerldPokerClient.Poker
 
         public int ChipsToCall { get; set; }
 
-        public bool BigBlindException { get; set; } = true;
+        private bool _bigBlindException { get; set; } = true;
 
         public Card[] Flop { get; set; }
         public Card Turn { get; set; }
@@ -40,9 +40,9 @@ namespace BerldPokerClient.Poker
         {
             get
             {
-                if (Flop == null && ToAct == ((DealerPosition + 1) % Players.Count) && BigBlindException && Players[ToAct].Chips != 0)
+                if (Flop == null && ToAct == ((DealerPosition + 1) % Players.Count) && _bigBlindException && Players[ToAct].Chips != 0)
                 {
-                    BigBlindException = false;
+                    _bigBlindException = false;
                     return false;
                 }
 
@@ -120,7 +120,7 @@ namespace BerldPokerClient.Poker
 
             BetRaise(SmallBlind);
             BetRaise(BigBlind);
-            BigBlindException = true;
+            _bigBlindException = true;
         }
 
         private int GetNextActive(int startingPoint)
@@ -142,7 +142,7 @@ namespace BerldPokerClient.Poker
 
         public void SetAfterDealer()
         {
-            BigBlindException = false;
+            _bigBlindException = false;
 
             ChipsToCall = 0;
             ToAct = GetNextActive(DealerPosition);
