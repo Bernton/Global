@@ -241,24 +241,13 @@ namespace BerldPokerServer.View
                     {
                         SendToAllExcept(affectedTable, $"PlayerLeft;{playerIndex}", playerIndex);
 
-                        if (affectedTable.ToAct < 0)
+                        if (affectedTable.Players.Count == 1)
                         {
-                            affectedTable.Players.Remove(currentPlayer);
-
-                            if (affectedTable.Players.Count(c => c.Chips > 0) == 0)
-                            {
-                                affectedTable.Players.Clear();
-                            }
+                            affectedTable.Players.Clear();
                         }
                         else
                         {
-                            currentPlayer.IsFolded = true;
-                            currentPlayer.Chips = 0;
-
-                            if (affectedTable.ToAct == playerIndex)
-                            {
-                                affectedTable.Fold();
-                            }
+                            affectedTable.RemovePlayer(playerIndex);
 
                             SetNextIfOver(affectedTable);
                         }

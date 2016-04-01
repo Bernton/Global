@@ -270,6 +270,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(798, 570);
+            this.Controls.Add(this._labelSHOWTurn);
             this.Controls.Add(this._labelPot);
             this.Controls.Add(this._labelPlayerCount);
             this.Controls.Add(this.label1);
@@ -285,7 +286,6 @@
             this.Controls.Add(this._pictureBoxFlop2);
             this.Controls.Add(this._pictureBoxFlop1);
             this.Controls.Add(this._labelSHOWRiver);
-            this.Controls.Add(this._labelSHOWTurn);
             this.Controls.Add(this._labelSHOWFlop);
             this.DoubleBuffered = true;
             this.KeyPreview = true;

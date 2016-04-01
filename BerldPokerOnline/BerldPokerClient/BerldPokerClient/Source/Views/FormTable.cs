@@ -124,25 +124,17 @@ namespace BerldPokerClient.Views
 
                     int leaverIndex = int.Parse(args[1]);
 
-                    if (leaverIndex >= _table.Players.Count - 1)
+                    if (leaverIndex >= _table.Players.Count)
                     {
                         return;
                     }
 
-                    if (_table.ToAct < 0)
-                    {
-                        _table.Players.RemoveAt(leaverIndex);
-                    }
-                    else
-                    {
-                        _table.Players[leaverIndex].IsFolded = true;
-                        _table.Players[leaverIndex].Chips = 0;
+                    string leaverName = _table.Players[leaverIndex].Name;
 
-                        if (_table.ToAct == leaverIndex)
-                        {
-                            _table.Fold();
-                        }
-                    }
+                    _table.RemovePlayer(leaverIndex);
+
+                    MessageBox.Show($"{leaverName} has left the table.", "BerldPokerClient", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     break;
 
                 case "Deal":
@@ -226,6 +218,8 @@ namespace BerldPokerClient.Views
 
         private void OnFormTable_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _client.ReceivedMessage -= OnServerMessageReceived;
+
             if (_player.Chips != 0)
             {
                 _client.SendMessage("TableLeft");
@@ -259,11 +253,11 @@ namespace BerldPokerClient.Views
             int bet;
             bool isValidNumber = int.TryParse(_textBoxChips.Text, out bet);
 
-            if (isValidNumber && bet >= _table.ChipsToCall + _table.BigBlind - _player.ChipsInPot)
+            if (isValidNumber && (bet >= _table.ChipsToCall + _table.BigBlind || bet >= _player.Chips ))
             {
-                if (bet > _player.Chips)
+                if (bet > _player.Chips + _player.ChipsInPot)
                 {
-                    bet = _player.Chips;
+                    bet = _player.Chips + _player.ChipsInPot;
                 }
 
                 _client.SendMessage($"BetRaise;{bet}");

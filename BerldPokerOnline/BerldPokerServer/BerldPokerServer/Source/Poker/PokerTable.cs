@@ -171,6 +171,28 @@ namespace BerldPokerServer.Poker
             return next;
         }
 
+        public void RemovePlayer(int index)
+        {
+            if (ToAct == index)
+            {
+                Fold();
+            }
+
+            Players.RemoveAt(index);
+
+            if (ToAct > 0)
+            {
+                ToAct--;
+            }
+
+            if (DealerPosition == Players.Count)
+            {
+                DealerPosition--;
+            }
+
+
+        }
+
         public int SetAfterDealer(out bool isEarly)
         {
             BigBlindException = false;
