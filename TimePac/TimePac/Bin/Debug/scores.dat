@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ArrayOfScore xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Score>
+    <Time>6291.7537</Time>
+    <Name>DatChefi</Name>
+  </Score>
+  <Score>
+    <Time>6328.7783</Time>
+    <Name>LePatin</Name>
+  </Score>
+  <Score>
+    <Time>6341.8701</Time>
+    <Name>Bernt</Name>
+  </Score>
+  <Score>
+    <Time>6363.7797</Time>
+    <Name>NeinMeinFührer</Name>
+  </Score>
+  <Score>
+    <Time>6374.9276</Time>
+    <Name>Sven</Name>
+  </Score>
+  <Score>
+    <Time>6406.5792</Time>
+    <Name>Silvan</Name>
+  </Score>
+  <Score>
+    <Time>6525.2152000000006</Time>
+    <Name>Mona</Name>
+  </Score>
+</ArrayOfScore>
