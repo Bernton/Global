@@ -53,43 +53,43 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Source\Direction.cs" />
-    <Compile Include="Source\FormMain.cs">
+    <Compile Include="Source\View\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Source\FormMain.Designer.cs">
+    <Compile Include="Source\View\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\GameInterface.cs">
+    <Compile Include="Source\View\GameInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\GameInterface.Designer.cs">
+    <Compile Include="Source\View\GameInterface.Designer.cs">
       <DependentUpon>GameInterface.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\AboutInterface.cs">
+    <Compile Include="Source\View\AboutInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\AboutInterface.Designer.cs">
+    <Compile Include="Source\View\AboutInterface.Designer.cs">
       <DependentUpon>AboutInterface.cs</DependentUpon>
     </Compile>
-    <Compile Include="Source\GamePanel.cs">
+    <Compile Include="Source\View\GamePanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Source\MenuInterface.cs">
+    <Compile Include="Source\View\MenuInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\MenuInterface.Designer.cs">
+    <Compile Include="Source\View\MenuInterface.Designer.cs">
       <DependentUpon>MenuInterface.cs</DependentUpon>
     </Compile>
     <Compile Include="Source\Score.cs" />
-    <Compile Include="Source\UsernameInterface.cs">
+    <Compile Include="Source\View\UsernameInterface.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Source\UsernameInterface.Designer.cs">
+    <Compile Include="Source\View\UsernameInterface.Designer.cs">
       <DependentUpon>UsernameInterface.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Source\FormMain.resx">
+    <EmbeddedResource Include="Source\View\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -102,16 +102,16 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Source\GameInterface.resx">
+    <EmbeddedResource Include="Source\View\GameInterface.resx">
       <DependentUpon>GameInterface.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\AboutInterface.resx">
+    <EmbeddedResource Include="Source\View\AboutInterface.resx">
       <DependentUpon>AboutInterface.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\MenuInterface.resx">
+    <EmbeddedResource Include="Source\View\MenuInterface.resx">
       <DependentUpon>MenuInterface.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Source\UsernameInterface.resx">
+    <EmbeddedResource Include="Source\View\UsernameInterface.resx">
       <DependentUpon>UsernameInterface.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -138,6 +138,51 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Images\PacManImage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\sign.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Sign.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\WallSpriteBackground.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CarBack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CarFront.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CarSide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Carside2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CarSide3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CarSprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\StreetCurve.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\StreetStraight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\CarRed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Formel1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\Caprio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Images\NasCar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
