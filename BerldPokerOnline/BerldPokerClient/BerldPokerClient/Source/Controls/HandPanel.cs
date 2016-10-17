@@ -1,5 +1,5 @@
-﻿using BerldPokerClient;
-using BerldPokerClient.Poker;
+﻿using BerldPokerClient.Poker;
+using BerldPokerClient.Properties;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,6 +9,8 @@ namespace BerldPoker.Controls
     [DesignerCategory("")]
     public class HandPanel : Panel
     {
+        //private Label _labelCard1;
+        //private Label _labelCard2;
         private PictureBox _pictureBoxCard1;
         private PictureBox _pictureBoxCard2;
         private Label _labelChips;
@@ -38,6 +40,8 @@ namespace BerldPoker.Controls
 
             if (player.Card1 != null && player.Card2 != null && !hideCards)
             {
+                //_labelCard1.Text = player.Card1.ToString();
+                //_labelCard2.Text = player.Card2.ToString();
                 _pictureBoxCard1.Image = CardImageProvider.GetImageFromCard(player.Card1);
                 _pictureBoxCard2.Image = CardImageProvider.GetImageFromCard(player.Card2);
             }
@@ -77,6 +81,8 @@ namespace BerldPoker.Controls
 
         private void InitializeComponent()
         {
+            //_labelCard1 = new Label();
+            //_labelCard2 = new Label();
             _pictureBoxCard1 = new PictureBox();
             _pictureBoxCard2 = new PictureBox();
             _labelChips = new Label();
@@ -88,6 +94,16 @@ namespace BerldPoker.Controls
             ((ISupportInitialize)_pictureBoxCard1).BeginInit();
 
             SuspendLayout();
+
+            //_labelCard1.AutoSize = true;
+            //_labelCard1.Location = new Point(18, 135);
+            //_labelCard1.BackColor = Color.Transparent;
+            //_labelCard1.Font = new Font("Arial Unicode MS", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
+
+            //_labelCard2.AutoSize = true;
+            //_labelCard2.Location = new Point(116, 135);
+            //_labelCard2.BackColor = Color.Transparent;
+            //_labelCard2.Font = new Font("Arial Unicode MS", 7.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
 
             _pictureBoxCard1.Location = new Point(30, 40);
             _pictureBoxCard1.Size = new Size(82, 118);

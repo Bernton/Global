@@ -16,6 +16,7 @@ namespace BerldPokerClient.Poker
         public int DealerPosition { get; set; } = -1;
         public int ToAct { get; set; } = -1;
 
+        public int MinRaiseAmount { get; set; } = 0;
         public int ChipsToCall { get; set; }
 
         private bool _bigBlindException { get; set; } = true;
@@ -69,7 +70,7 @@ namespace BerldPokerClient.Poker
 
         public PokerTable()
         {
-
+            MinRaiseAmount = BigBlind;
         }
 
         #endregion
@@ -314,12 +315,13 @@ namespace BerldPokerClient.Poker
         {
             if (ToAct < 0) return;
 
-            ChipsToCall = chips;
+            int potDifference = chips - Players[ToAct].ChipsInPot;
 
-            int difference = ChipsToCall - Players[ToAct].ChipsInPot;
+            Players[ToAct].Chips -= potDifference;
+            Players[ToAct].ChipsInPot += potDifference;
 
-            Players[ToAct].Chips -= difference;
-            Players[ToAct].ChipsInPot += difference;
+            MinRaiseAmount = Players[ToAct].ChipsInPot - ChipsToCall;
+            ChipsToCall = Players[ToAct].ChipsInPot;
 
             NextToAct();
         }

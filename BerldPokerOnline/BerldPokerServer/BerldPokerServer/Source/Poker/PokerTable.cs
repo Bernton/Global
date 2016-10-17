@@ -375,14 +375,12 @@ namespace BerldPokerServer.Poker
 
         public void BetRaise(int chips)
         {
-            if (ToAct < 0) return;
+            int potDifference = chips - Players[ToAct].ChipsInPot;
 
-            ChipsToCall = chips;
+            Players[ToAct].Chips -= potDifference;
+            Players[ToAct].ChipsInPot += potDifference;
 
-            int difference = ChipsToCall - Players[ToAct].ChipsInPot;
-
-            Players[ToAct].Chips -= difference;
-            Players[ToAct].ChipsInPot += difference;
+            ChipsToCall = Players[ToAct].ChipsInPot;
 
             NextToAct();
         }

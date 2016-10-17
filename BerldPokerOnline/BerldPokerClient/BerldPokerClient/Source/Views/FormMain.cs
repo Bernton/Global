@@ -1,6 +1,7 @@
 ﻿using BerldPokerClient.NetworkUtilities;
 using BerldPokerClient.Poker;
 using BerldPokerClient.Properties;
+using Microsoft.VisualBasic;
 using System;
 using System.IO;
 using System.Net;
@@ -16,14 +17,39 @@ namespace BerldPokerClient.Views
         private FormTable _table;
         private UtilityClient _client;
 
+        private string _userName;
+
         #endregion
 
         #region Initialization
 
         public FormMain()
         {
+            PromptUserName();
             InitializeClient();
             InitializeUI();
+        }
+
+        private void PromptUserName()
+        {
+            string input = Interaction.InputBox("Please enter a username.", "Berld Poker Client", "Guest" + (new Random()).Next(1000));
+
+            if(string.IsNullOrWhiteSpace(input))
+            {
+                Environment.Exit(0);
+            }
+
+            while (input.Length < 3)
+            {
+                input = Interaction.InputBox("Invalid username. Please enter a new username.", "Berld Poker Client");
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Environment.Exit(0);
+                }
+            }
+
+            _userName = input;
         }
 
         private void InitializeClient()
@@ -35,7 +61,7 @@ namespace BerldPokerClient.Views
 
                 if (IPAddress.TryParse(fileIP, out address))
                 {
-                    _client = new UtilityClient(Environment.MachineName + DateTime.Now.Millisecond);
+                    _client = new UtilityClient(_userName);
                     _client.ReceivedMessage += OnServerMessageReceived;
                     _client.ReceivedServerError += OnServerErrorReceived;
 
@@ -110,7 +136,7 @@ namespace BerldPokerClient.Views
                     PokerTable table = (PokerTable)serializer.Deserialize(new StringReader(tableData));
 
                     Visible = false;
-                    _table = new FormTable(_client, table, false);
+                    _table = new FormTable(_client, table, false, _userName);
                     _table.FormClosed += OnTableClosed;
                     _table.Show();
 
@@ -136,7 +162,7 @@ namespace BerldPokerClient.Views
                     _client.ReceivedMessage -= OnServerMessageReceived;
 
                     Visible = false;
-                    _table = new FormTable(_client);
+                    _table = new FormTable(_client, _userName);
                     _table.FormClosed += OnTableClosed;
                     _table.Show();
 

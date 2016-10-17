@@ -444,7 +444,7 @@ namespace BerldPokerServer.View
                 return;
             }
 
-            if (table.Players.Count(c => c.IsFolded == false) == 0)
+            if(table.Players.Count(c => c.IsFolded == false) == 0)
             {
                 PokerSalon.Tables.Remove(table);
             }
@@ -486,7 +486,7 @@ namespace BerldPokerServer.View
                 PokerPlayer[] showDownPlayers = table.Players.Where(c => c.IsFolded == false).ToArray();
                 IHandValue[] showDownValues = new IHandValue[showDownPlayers.Length];
 
-                if (showDownPlayers.Length == 0)
+                if(showDownPlayers.Length == 0)
                 {
                     PokerSalon.Tables.Remove(table);
                     return;
