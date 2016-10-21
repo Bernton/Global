@@ -1,0 +1,8 @@
+D:\Learning\DecisionDealer\DecisionDealer\Bin\Release\DecisionDealer.exe.config
+D:\Learning\DecisionDealer\DecisionDealer\Bin\Release\DecisionDealer.exe
+D:\Learning\DecisionDealer\DecisionDealer\Bin\Release\DecisionDealer.pdb
+D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.Properties.Resources.resources
+D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.View.FormMain.resources
+D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.csproj.GenerateResource.Cache
+D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.exe
+D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.pdb
