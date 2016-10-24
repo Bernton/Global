@@ -151,7 +151,7 @@ namespace BerldPokerClient.Views
                     PokerTable tableObs = (PokerTable)serializerObs.Deserialize(new StringReader(tableDataObs));
 
                     Visible = false;
-                    _table = new FormTable(_client, tableObs, true);
+                    _table = new FormTable(_client, tableObs, true, "Observer");
                     _table.FormClosed += OnTableClosed;
                     _table.Show();
 

@@ -3,6 +3,7 @@ using BerldPokerClient.Properties;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using BerldPokerClient;
 
 namespace BerldPoker.Controls
 {
