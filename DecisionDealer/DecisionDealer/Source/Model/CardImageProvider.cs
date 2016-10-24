@@ -8,8 +8,8 @@ namespace DecisionDealer.Model
         private static Bitmap[] _cardImages;
         private static Bitmap _cardBack;
 
-        private static int _cardWidth = 81;
-        private static double _cardHeight = 117.4;
+        private static int _cardWidth = 125;
+        private static int _cardHeight = 181;
 
         static CardImageProvider()
         {
@@ -19,11 +19,11 @@ namespace DecisionDealer.Model
             {
                 for (int valueIndex = 0; valueIndex < 13; valueIndex++)
                 {
-                    _cardImages[suitIndex * 13 + valueIndex] = CropImage(Resources.CardSprite, new Rectangle(valueIndex * _cardWidth, (int)(suitIndex * _cardHeight), _cardWidth, (int)_cardHeight));
+                    _cardImages[suitIndex * 13 + valueIndex] = CropImage(Resources.CardSprite, new Rectangle(valueIndex * _cardWidth, suitIndex * _cardHeight, _cardWidth, _cardHeight));
                 }
             }
 
-            _cardBack = CropImage(Resources.CardSprite, new Rectangle(0, (int)(4 * _cardHeight), _cardWidth, (int)_cardHeight));
+            _cardBack = CropImage(Resources.CardSprite, new Rectangle(0, 4 * _cardHeight, _cardWidth, _cardHeight));
         }
 
 

@@ -11,12 +11,13 @@ namespace DecisionDealer.Model
         private Random _rnd = new Random();
         private Deck _deck = new Deck();
 
-
+        public int ShowFrequency { get; set; }
         public PokerPlayer[] Players { get; private set; }
         public List<Card> CommunityCards { get; private set; }
 
         public PokerTable()
         {
+            ShowFrequency = 50;
             ResetTable();
         }
 
@@ -28,8 +29,8 @@ namespace DecisionDealer.Model
             IHandValue[] handValues = new IHandValue[10];
 
             for (int i = 0; i < Players.Length; i++)
-			{
-                if(Players[i] != null)
+            {
+                if (Players[i] != null)
                 {
                     Players[i].RevealedCards = true;
 
@@ -46,7 +47,7 @@ namespace DecisionDealer.Model
                     handValues[i] = PokerEngine.GetHandValue(cards);
                     indexes.Add(i);
                 }
-			}
+            }
 
             return PokerEngine.GetWinnerValueIndexes(handValues.ToArray());
         }
@@ -91,12 +92,39 @@ namespace DecisionDealer.Model
 
             int count = 0;
 
+            bool cardsShown = false;
+
             for (int i = 0; i < Players.Length; i++)
             {
-                if(Players[i] != null)
+                if (Players[i] != null)
                 {
-                    Players[i].HoleCards[0] = _deck.Cards[count * 2];
-                    Players[i].HoleCards[1] = _deck.Cards[count * 2 + 1];
+
+                    if (count == 0)
+                    {
+                        Players[i].HoleCards[0] = _deck.Cards[count * 2];
+                        Players[i].HoleCards[1] = _deck.Cards[count * 2 + 1];
+                    }
+                    else
+                    {
+                        if (_rnd.Next(100) < ShowFrequency - 1)
+                        {
+                            Players[i].HoleCards[0] = _deck.Cards[count * 2];
+                        }
+                        else
+                        {
+                            Players[i].HoleCards[0] = null;
+                        }
+
+                        if (_rnd.Next(100) < ShowFrequency - 1)
+                        {
+                            Players[i].HoleCards[1] = _deck.Cards[count * 2 + 1];
+                        }
+                        else
+                        {
+                            Players[i].HoleCards[1] = null;
+                        }
+
+                    }
 
                     count++;
                 }

@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Reflection;
 using System.Linq;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace DecisionDealer.View
 {
@@ -14,8 +16,13 @@ namespace DecisionDealer.View
         private PokerTable _table = new PokerTable();
         private double _canvasRatio = Resources.Table.Width / (double)Resources.Table.Height;
 
-        private int[] _winners = null;
-        private double _cash = 30;
+        //private int[] _winners = null;
+        private double _percentageCorrect = 100;
+
+        private int round = 0;
+        private int right = 0;
+
+        private HandStatistic[] _handStats = null;
 
         private int[] _coords = new int[]
         {
@@ -34,13 +41,27 @@ namespace DecisionDealer.View
         public FormMain()
         {
             InitializeComponent();
-            Text = string.Format("DecisionDealer Version {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString(2));
+            Text = string.Format("Decision Dealer Version {0}", Assembly.GetExecutingAssembly().GetName().Version.ToString(2));
 
             ResetTable();
         }
 
         public void ResetTable()
         {
+            int freqInput;
+
+            if(int.TryParse(_textBoxFreq.Text, out freqInput))
+            {
+                _table.ShowFrequency = freqInput;
+            }
+
+            if (round != 0)
+            {
+                _labelCash.Text = string.Format("Hands correct: {0} %", Math.Round((double)right / round * 100.0), 1);
+            }
+
+            round++;
+
             _table.ResetTable();
 
             for (int i = 0; i < _rnd.Next(2, _table.Players.Length); i++)
@@ -59,20 +80,41 @@ namespace DecisionDealer.View
                 }
             }
 
+            _labelResult.Text = "";
             _table.DealHoleCards();
-            _winners = null;
+            //_winners = null;
             _panelCanvas.Invalidate();
+
+            PokerSimulationEngine simulator = new PokerSimulationEngine(60000);
+            PokerPlayer[] players = _table.Players.Where(c => c != null).ToArray();
+            Card[][] holeCards = new Card[players.Length][];
+
+            for (int i = 0; i < players.Length; i++)
+            {
+                holeCards[i] = (Card[])players[i].HoleCards.Clone();
+            }
+
+            Task.Factory.StartNew(() =>
+            {
+                _handStats = simulator.Simulate(holeCards);
+
+                Invoke((MethodInvoker)delegate
+                {
+                    _buttonCall.Enabled = true;
+                    _buttonFold.Enabled = true;
+                });
+            });
         }
 
         private void OnPanelCanvasPaint(object sender, PaintEventArgs e)
         {
-            _labelCash.Text = string.Format("{0} $", Math.Round(_cash, 2));
-
             DrawPokerTable(e.Graphics);
         }
 
         private void DrawPokerTable(Graphics g)
         {
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
             double sizeFactor = _panelCanvas.Width / (double)Resources.Table.Width;
 
             for (int i = 0; i < _table.Players.Length; i++)
@@ -82,28 +124,34 @@ namespace DecisionDealer.View
                     Image firstCardImage;
                     Image secondCardImage;
 
-                    if (!_table.Players[i].RevealedCards)
+                    if (_table.Players[i].HoleCards[0] == null)
                     {
                         firstCardImage = CardImageProvider.GetCardBack();
-                        secondCardImage = CardImageProvider.GetCardBack();
                     }
                     else
                     {
                         firstCardImage = CardImageProvider.GetCard(_table.Players[i].HoleCards[0]);
+                    }
+
+                    if (_table.Players[i].HoleCards[1] == null)
+                    {
+                        secondCardImage = CardImageProvider.GetCardBack();
+                    }
+                    else
+                    {
                         secondCardImage = CardImageProvider.GetCard(_table.Players[i].HoleCards[1]);
                     }
 
                     Point seatPosition = GetAbsoluteSeatPosition(i);
-
-                    Size cardSize = new Size(Round(firstCardImage.Width * sizeFactor), Round(firstCardImage.Height * sizeFactor));
+                    Size cardSize = new Size(Round(firstCardImage.Width * sizeFactor * 0.6), Round(firstCardImage.Height * sizeFactor * 0.6));
 
                     g.DrawImage(firstCardImage, seatPosition.X - cardSize.Width, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
                     g.DrawImage(secondCardImage, seatPosition.X, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
-                    
-                    if(_winners != null && _winners.Contains(i))
-                    {
-                        g.DrawRectangle(new Pen(Brushes.Gray, 3), seatPosition.X - Round(cardSize.Width * 1.05), seatPosition.Y - Round(cardSize.Height / 2 * 1.1), Round(cardSize.Width * 2.1), Round(cardSize.Height * 1.1));
-                    }
+
+                    //if (_winners != null && _winners.Contains(i))
+                    //{
+                    //    g.DrawRectangle(new Pen(Brushes.Gray, 3), seatPosition.X - Round(cardSize.Width * 1.05), seatPosition.Y - Round(cardSize.Height / 2 * 1.1), Round(cardSize.Width * 2.1), Round(cardSize.Height * 1.1));
+                    //}
                 }
             }
 
@@ -133,7 +181,10 @@ namespace DecisionDealer.View
 
         private void OnPanelLayoutSizeChanged(object sender, EventArgs e)
         {
-            _panelCanvas.Invalidate();
+            if (_panelLayout.Width > Screen.PrimaryScreen.Bounds.Width)
+            {
+                _panelLayout.Width = Screen.PrimaryScreen.Bounds.Width;
+            }
 
             if ((int)(_panelLayout.Height * _canvasRatio) >= _panelLayout.Width)
             {
@@ -143,43 +194,62 @@ namespace DecisionDealer.View
             }
             else
             {
-                int x = Round((_panelLayout.Width - _panelCanvas.Width) / 2.0);
+                int x = Round((_panelLayout.Width - _panelLayout.Height * _canvasRatio) / 2.0);
                 _panelCanvas.Size = new Size(Round(_panelLayout.Height * _canvasRatio), _panelLayout.Height);
                 _panelCanvas.Location = new Point(x, 0);
             }
+
+            _panelCanvas.Invalidate();
         }
 
         private void OnButtonCallClick(object sender, EventArgs e)
         {
-            _winners = _table.Playout();
             int count = _table.Players.Count(c => c != null);
 
-            if(_winners.Contains(0))
-            {
-                
+            double equity = _handStats[0].WinPercentage + (_handStats[0].TiePercentage / (double)count);
+            string turnout = "";
 
-                _cash += ((double)count / _winners.Length) - 1;
+            if (equity > 1.0 / count * 100.0)
+            {
+                right++;
+                turnout = "Correct call";
+                _percentageCorrect++;
             }
             else
             {
-                _cash -=  1;
+                turnout = "Wrong call";
+                _percentageCorrect--;
             }
+
+            _labelResult.Text = string.Format("{0}: {1} % (Avg. {2} %)", turnout, Math.Round(equity, 2), Math.Round(1.0 / count * 100.0, 2));
 
             _buttonCall.Enabled = false;
             _buttonFold.Enabled = false;
             _buttonNext.Enabled = true;
-
             _panelCanvas.Invalidate();
         }
 
         private void OnButtonFoldClick(object sender, EventArgs e)
         {
-            _winners = _table.Playout();
             int count = _table.Players.Count(c => c != null);
+            double equity = _handStats[0].WinPercentage + (_handStats[0].TiePercentage / (double)count);
+            string turnout = "";
 
-            _winners = _table.Playout();
+            if (equity > 1.0 / count * 100.0)
+            {
+                turnout = "Wrong fold";
+                _percentageCorrect++;
+            }
+            else
+            {
+                right++;
+                turnout = "Correct fold";
+                _percentageCorrect--;
+            }
 
-            _cash -= 1.0 / count / count;
+            _labelResult.Text = string.Format("{0}: {1} % (Avg. {2} %)", turnout, Math.Round(equity, 2), Math.Round(1.0 / count * 100.0, 2));
+
+            _percentageCorrect -= 0.5;
 
             _buttonCall.Enabled = false;
             _buttonFold.Enabled = false;
@@ -191,10 +261,7 @@ namespace DecisionDealer.View
         private void OnButtonNextClick(object sender, EventArgs e)
         {
             ResetTable();
-
             _buttonNext.Enabled = false;
-            _buttonCall.Enabled = true;
-            _buttonFold.Enabled = true;
         }
     }
 }

@@ -6,3 +6,11 @@ D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.View.Form
 D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.csproj.GenerateResource.Cache
 D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.exe
 D:\Learning\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Release\DecisionDealer.exe.config
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Release\DecisionDealer.exe
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Release\DecisionDealer.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.Properties.Resources.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.View.FormMain.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.csproj.GenerateResource.Cache
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.exe
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Release\DecisionDealer.pdb

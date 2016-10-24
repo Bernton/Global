@@ -6,3 +6,11 @@ D:\Learning\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csproj.Gene
 D:\Learning\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.exe
 D:\Learning\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.pdb
 D:\Learning\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.View.FormMain.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\DecisionDealer.exe.config
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.exe
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\DecisionDealer.exe
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\DecisionDealer.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.Properties.Resources.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.View.FormMain.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csproj.GenerateResource.Cache

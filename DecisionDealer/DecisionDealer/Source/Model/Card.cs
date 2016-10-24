@@ -1,6 +1,8 @@
-﻿namespace DecisionDealer.Model
+﻿using System;
+
+namespace DecisionDealer.Model
 {
-    public class Card
+    public class Card : ICloneable
     {
         public Card(CardValue value, CardSuit suit)
         {
@@ -14,6 +16,11 @@
         public override string ToString()
         {
             return string.Format("{0} of {1}s", Value.ToString(), Suit.ToString());
+        }
+
+        public object Clone()
+        {
+            return new Card(Value, Suit);
         }
     }
 }

@@ -64,6 +64,55 @@ namespace DecisionDealer.Model
             return sameAsLead.ToArray();
         }
 
+        public static int[] GetWinnerValueIndexes(Card[][] holeCards, Card[] communityCards)
+        {
+            bool isSame;
+
+            IHandValue[] handValues = new IHandValue[holeCards.Length];
+
+            for (int i = 0; i < holeCards.Length; i++)
+            {
+                Card[] cards = new Card[]
+                {
+                    holeCards[i][0],
+                    holeCards[i][1],
+                    communityCards[0],
+                    communityCards[1],
+                    communityCards[2],
+                    communityCards[3],
+                    communityCards[4]
+               };
+
+               handValues[i] = GetHandValue(cards);
+            }
+
+
+            if (handValues == null || handValues.Length < 2)
+            {
+                throw new ArgumentException("HandValues may not be null and have to more than 2 to compare");
+            }
+
+            int currentlyLeading = 0;
+            List<int> sameAsLead = new List<int>();
+
+            for (int i = 1; i < handValues.Length; i++)
+            {
+                if (IsCompetitorStronger(handValues[currentlyLeading], handValues[i], out isSame))
+                {
+                    currentlyLeading = i;
+                    sameAsLead.Clear();
+                }
+
+                if (isSame)
+                {
+                    sameAsLead.Add(i);
+                }
+            }
+
+            sameAsLead.Add(currentlyLeading);
+            return sameAsLead.ToArray();
+        }
+
         public static bool IsCompetitorStronger(IHandValue currentlyBest, IHandValue competitor, out bool isSame)
         {
             isSame = false;

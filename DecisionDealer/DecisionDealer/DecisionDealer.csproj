@@ -68,8 +68,10 @@
     <Compile Include="Source\Model\Combinations\StraightFlush.cs" />
     <Compile Include="Source\Model\Combinations\TreeOfAKind.cs" />
     <Compile Include="Source\Model\HandRanking.cs" />
+    <Compile Include="Source\Model\HandStatistic.cs" />
     <Compile Include="Source\Model\PokerPlayer.cs" />
     <Compile Include="Source\Model\PokerEngine.cs" />
+    <Compile Include="Source\Model\PokerSimulationEngine.cs" />
     <Compile Include="Source\Model\Suit.cs" />
     <Compile Include="Source\Model\PokerTable.cs" />
     <Compile Include="Source\Model\Value.cs" />
