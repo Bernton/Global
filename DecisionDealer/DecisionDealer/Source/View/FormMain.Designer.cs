@@ -137,9 +137,9 @@
             // 
             // _panelCanvas
             // 
-            this._panelCanvas.BackColor = System.Drawing.Color.White;
+            this._panelCanvas.BackColor = System.Drawing.SystemColors.Control;
             this._panelCanvas.BackgroundImage = global::DecisionDealer.Properties.Resources.Table;
-            this._panelCanvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this._panelCanvas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this._panelCanvas.Location = new System.Drawing.Point(0, 0);
             this._panelCanvas.Name = "_panelCanvas";
             this._panelCanvas.Size = new System.Drawing.Size(1022, 552);

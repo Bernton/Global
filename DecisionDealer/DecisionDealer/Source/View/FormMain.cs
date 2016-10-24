@@ -26,16 +26,16 @@ namespace DecisionDealer.View
 
         private int[] _coords = new int[]
         {
-            295, 421,
-            126, 390,
-            105, 263,
-            198, 134,
-            407, 131,
-            616, 131,
-            824, 134,
-            931, 263,
-            888, 390,
-            712, 421
+            333, 411,
+            176, 400,
+            130, 253,
+            240, 154,
+            427, 151,
+            600, 151,
+            778, 154,
+            886, 263,
+            848, 395,
+            692, 421
         };
 
         public FormMain()
@@ -143,7 +143,7 @@ namespace DecisionDealer.View
                     }
 
                     Point seatPosition = GetAbsoluteSeatPosition(i);
-                    Size cardSize = new Size(Round(firstCardImage.Width * sizeFactor * 0.6), Round(firstCardImage.Height * sizeFactor * 0.6));
+                    Size cardSize = new Size(Round(firstCardImage.Width * sizeFactor * 0.5), Round(firstCardImage.Height * sizeFactor * 0.5));
 
                     g.DrawImage(firstCardImage, seatPosition.X - cardSize.Width, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
                     g.DrawImage(secondCardImage, seatPosition.X, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
@@ -168,8 +168,8 @@ namespace DecisionDealer.View
             int x;
             int y;
 
-            x = Round(_coords[seatIndex * 2] * sizeFactor);
-            y = Round(_coords[seatIndex * 2 + 1] * sizeFactor);
+            x = Round((_coords[seatIndex * 2] + 5) * sizeFactor);
+            y = Round((_coords[seatIndex * 2 + 1] - 5) * sizeFactor);
 
             return new Point(x, y);
         }
