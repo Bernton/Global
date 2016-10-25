@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this._buttonFold = new System.Windows.Forms.Button();
             this._buttonCall = new System.Windows.Forms.Button();
-            this._labelCash = new System.Windows.Forms.Label();
+            this._labelCorrect = new System.Windows.Forms.Label();
             this._buttonNext = new System.Windows.Forms.Button();
             this._labelResult = new System.Windows.Forms.Label();
             this._textBoxFreq = new System.Windows.Forms.TextBox();
@@ -67,15 +67,15 @@
             this._buttonCall.UseVisualStyleBackColor = true;
             this._buttonCall.Click += new System.EventHandler(this.OnButtonCallClick);
             // 
-            // _labelCash
+            // _labelCorrect
             // 
-            this._labelCash.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._labelCash.AutoSize = true;
-            this._labelCash.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._labelCash.Location = new System.Drawing.Point(852, 651);
-            this._labelCash.Name = "_labelCash";
-            this._labelCash.Size = new System.Drawing.Size(0, 21);
-            this._labelCash.TabIndex = 5;
+            this._labelCorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._labelCorrect.AutoSize = true;
+            this._labelCorrect.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._labelCorrect.Location = new System.Drawing.Point(852, 651);
+            this._labelCorrect.Name = "_labelCorrect";
+            this._labelCorrect.Size = new System.Drawing.Size(0, 21);
+            this._labelCorrect.TabIndex = 5;
             // 
             // _buttonNext
             // 
@@ -109,7 +109,7 @@
             this._textBoxFreq.Name = "_textBoxFreq";
             this._textBoxFreq.Size = new System.Drawing.Size(100, 29);
             this._textBoxFreq.TabIndex = 8;
-            this._textBoxFreq.Text = "25";
+            this._textBoxFreq.Text = "50";
             // 
             // _labelShowFreq
             // 
@@ -155,7 +155,7 @@
             this.Controls.Add(this._textBoxFreq);
             this.Controls.Add(this._labelResult);
             this.Controls.Add(this._buttonNext);
-            this.Controls.Add(this._labelCash);
+            this.Controls.Add(this._labelCorrect);
             this.Controls.Add(this._buttonFold);
             this.Controls.Add(this._buttonCall);
             this.Controls.Add(this._panelLayout);
@@ -176,7 +176,7 @@
         private BufferedPanel _panelLayout;
         private System.Windows.Forms.Button _buttonFold;
         private System.Windows.Forms.Button _buttonCall;
-        private System.Windows.Forms.Label _labelCash;
+        private System.Windows.Forms.Label _labelCorrect;
         private System.Windows.Forms.Button _buttonNext;
         private System.Windows.Forms.Label _labelResult;
         private System.Windows.Forms.TextBox _textBoxFreq;

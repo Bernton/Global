@@ -2,7 +2,7 @@
 
 namespace DecisionDealer.Model
 {
-    public class Card : ICloneable
+    public class Card : ICloneable, IComparable
     {
         public Card(CardValue value, CardSuit suit)
         {
@@ -21,6 +21,20 @@ namespace DecisionDealer.Model
         public object Clone()
         {
             return new Card(Value, Suit);
+        }
+
+        public int CompareTo(object obj)
+        {
+            Card card = (Card)obj;
+
+            if(card.Value > Value)
+            {
+                return -1;
+            }
+            else
+            {
+                return 1;
+            }
         }
     }
 }

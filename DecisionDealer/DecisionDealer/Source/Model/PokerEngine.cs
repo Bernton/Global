@@ -1,30 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DecisionDealer.Model
 {
     public static class PokerEngine
     {
-        public static int Total
-        {
-            get
-            {
-                return StraightFlush + FourOfAKind + FullHouse + Flush + Straight + TreeOfAKind + DoublePair + Pair + HighCard;
-            }
-        }
-
-        public static int RoyalFlush { get; private set; }
-        public static int StraightFlush { get; private set; }
-        public static int FourOfAKind { get; private set; }
-        public static int FullHouse { get; private set; }
-        public static int Flush { get; private set; }
-        public static int Straight { get; private set; }
-        public static int TreeOfAKind { get; private set; }
-        public static int DoublePair { get; private set; }
-        public static int Pair { get; private set; }
-        public static int HighCard { get; private set; }
-
         public static int[] GetWinnerValueIndexes(IHandValue[] handValues)
         {
             bool isSame;
@@ -39,7 +19,7 @@ namespace DecisionDealer.Model
 
             for (int i = 1; i < handValues.Length; i++)
             {
-                if(handValues[i] == null)
+                if (handValues[i] == null)
                 {
                     continue;
                 }
@@ -67,23 +47,28 @@ namespace DecisionDealer.Model
         public static int[] GetWinnerValueIndexes(Card[][] holeCards, Card[] communityCards)
         {
             bool isSame;
-
             IHandValue[] handValues = new IHandValue[holeCards.Length];
 
-            for (int i = 0; i < holeCards.Length; i++)
+            Card[] cards = new Card[]
             {
-                Card[] cards = new Card[]
-                {
-                    holeCards[i][0],
-                    holeCards[i][1],
+                    null,
+                    null,
                     communityCards[0],
                     communityCards[1],
                     communityCards[2],
                     communityCards[3],
                     communityCards[4]
-               };
+            };
 
-               handValues[i] = GetHandValue(cards);
+
+            for (int i = 0; i < holeCards.Length; i++)
+            {
+                cards[0] = holeCards[i][0];
+                cards[1] = holeCards[i][1];
+
+                EntryPoint.StartReporting(0);
+                handValues[i] = GetHandValue(cards);
+                EntryPoint.Put(0, 0);
             }
 
 
@@ -110,6 +95,7 @@ namespace DecisionDealer.Model
             }
 
             sameAsLead.Add(currentlyLeading);
+
             return sameAsLead.ToArray();
         }
 
@@ -367,187 +353,263 @@ namespace DecisionDealer.Model
         {
             IHandValue handValue = null;
 
+            int[] values = new int[cards.Length];
+
+            for (int i = 0; i < cards.Length; i++)
+            {
+                values[i] = (int)cards[i].Value;
+            }
+
             if (IsStraightFlush(cards, ref handValue))
             {
-                if (((StraightFlush)handValue).Highest == CardValue.Ace)
-                {
-                    RoyalFlush++;
-                }
-
-                StraightFlush++;
                 return handValue;
             }
 
-            if (IsFourOfAKind(cards, ref handValue))
+            if (IsFourOfAKind(values, ref handValue))
             {
-                FourOfAKind++;
                 return handValue;
             }
 
-            if (IsFullHouse(cards, ref handValue))
+            if (IsFullHouse(values, ref handValue))
             {
-                FullHouse++;
                 return handValue;
             }
 
             if (IsFlush(cards, ref handValue))
             {
-                Flush++;
                 return handValue;
             }
 
-            if (IsStraight(cards, ref handValue))
+            if (IsStraight(values, ref handValue))
             {
-                Straight++;
                 return handValue;
             }
 
-            if (IsTreeOfAKind(cards, ref handValue))
+            if (IsTreeOfAKind(values, ref handValue))
             {
-                TreeOfAKind++;
                 return handValue;
             }
 
-            if (IsDoublePair(cards, ref handValue))
+            if (IsDoublePair(values, ref handValue))
             {
-                DoublePair++;
                 return handValue;
             }
 
-            if (IsPair(cards, ref handValue))
+            if (IsPair(values, ref handValue))
             {
-                Pair++;
                 return handValue;
             }
 
+            EntryPoint.StartReporting(9);
 
-            HighCard++;
-            Card[] sorted = cards.OrderBy(c => c.Value).ToArray();
+            values.QuickSort();
             CardValue[] best5 = new CardValue[]
             {
-                sorted[6].Value,
-                sorted[5].Value,
-                sorted[4].Value,
-                sorted[3].Value,
-                sorted[2].Value
+                (CardValue)values[6],
+                (CardValue)values[5],
+                (CardValue)values[4],
+                (CardValue)values[3],
+                (CardValue)values[2]
             };
 
+            EntryPoint.Put(9, 9);
             return new HighCard(best5);
         }
 
         private static bool IsStraightFlush(Card[] cards, ref IHandValue value)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                Card[] result = cards.Where(c => c.Suit == ((CardSuit)i)).OrderBy(c => c.Value).ToArray();
+            EntryPoint.StartReporting(1);
 
-                if (result.Length >= 5 && IsStraight(result, ref value))
+            for (int suitI = 0; suitI < 4; suitI++)
+            {
+                List<Card> suitedCards = new List<Card>();
+
+                for (int cardI = 0; cardI < cards.Length; cardI++)
+                {
+                    if (cards[cardI].Suit == (CardSuit)suitI)
+                    {
+                        suitedCards.Add(cards[cardI]);
+                    }
+                }
+
+                if (suitedCards.Count >= 5 && IsStraight(suitedCards.ToArray(), ref value))
                 {
                     value = new StraightFlush(((Straight)value).Highest);
+                    EntryPoint.Put(1, 1);
                     return true;
                 }
             }
 
+            EntryPoint.Put(1, 1);
             return false;
         }
 
-        private static bool IsFourOfAKind(Card[] cards, ref IHandValue value)
+        private static bool IsFourOfAKind(int[] values, ref IHandValue value)
         {
-            for (int i = 0; i < 13; i++)
+            EntryPoint.StartReporting(2);
+
+            for (int valueI = 0; valueI < 13; valueI++)
             {
-                if (cards.Where(c => c.Value == ((CardValue)i)).ToArray().Length == 4)
-                {
-                    CardValue kicker = cards.Where(c => c.Value != (CardValue)i).Max(c => c.Value);
+                int count = 0;
 
-                    value = new FourOfAKind((CardValue)i, kicker);
+                for (int cardI = 0; cardI < values.Length; cardI++)
+                {
+                    if (values[cardI] == valueI)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 4)
+                {
+                    CardValue kicker = CardValue.Deuce;
+
+                    for (int cardI = 0; cardI < values.Length; cardI++)
+                    {
+                        if (values[cardI] != valueI && values[cardI] > (int)kicker)
+                        {
+                            kicker = (CardValue)values[cardI];
+                        }
+                    }
+
+                    value = new FourOfAKind((CardValue)valueI, kicker);
+                    EntryPoint.Put(2, 2);
                     return true;
                 }
             }
 
+            EntryPoint.Put(2, 2);
             return false;
         }
 
-        private static bool IsFullHouse(Card[] cards, ref IHandValue value)
+        private static bool IsFullHouse(int[] values, ref IHandValue value)
         {
+            EntryPoint.StartReporting(3);
+
             bool trips = false;
             int tripIndex = 0;
 
-            for (int i = 12; i >= 0; i--)
+            for (int valueI = 12; valueI >= 0; valueI--)
             {
-                if (cards.Where(c => c.Value == ((CardValue)i)).ToArray().Length == 3)
+                int count = 0;
+
+                for (int cardI = 0; cardI < values.Length; cardI++)
+                {
+                    if (values[cardI] == valueI)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 3)
                 {
                     trips = true;
-                    tripIndex = i;
+                    tripIndex = valueI;
                     break;
                 }
             }
 
             if (!trips)
             {
+                EntryPoint.Put(3, 3);
                 return false;
             }
 
-            for (int i = 12; i >= 0; i--)
+            for (int valueI = 12; valueI >= 0; valueI--)
             {
-                if (i == tripIndex)
+                if (valueI == tripIndex)
                 {
                     continue;
                 }
 
-                if (cards.Where(c => c.Value == ((CardValue)i)).ToArray().Length >= 2)
+                int count = 0;
+
+                for (int cardI = 0; cardI < values.Length; cardI++)
                 {
-                    value = new FullHouse((CardValue)tripIndex, (CardValue)i);
+                    if (values[cardI] == valueI)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count >= 2)
+                {
+                    value = new FullHouse((CardValue)tripIndex, (CardValue)valueI);
+                    EntryPoint.Put(3, 3);
                     return true;
                 }
             }
 
+            EntryPoint.Put(3, 3);
             return false;
         }
 
         private static bool IsFlush(Card[] cards, ref IHandValue value)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                Card[] result = cards.Where(c => c.Suit == ((CardSuit)i)).OrderBy(c => Math.Abs((int)c.Value - 12)).ToArray();
+            EntryPoint.StartReporting(4);
 
-                if (result.Length >= 5)
+            for (int suitI = 0; suitI < 4; suitI++)
+            {
+                List<Card> suitedCards = new List<Card>();
+
+                for (int cardI = 0; cardI < cards.Length; cardI++)
                 {
+                    if (cards[cardI].Suit == (CardSuit)suitI)
+                    {
+                        suitedCards.Add(cards[cardI]);
+                    }
+                }
+
+                if (suitedCards.Count >= 5)
+                {
+                    int[] values = new int[suitedCards.Count];
+
+                    for (int i = 0; i < suitedCards.Count; i++)
+                    {
+                        values[i] = (int)suitedCards[i].Value;
+                    }
+
+                    values.QuickSort();
+
                     value = new Flush(new CardValue[]
                     {
-                        result[0].Value,
-                        result[1].Value,
-                        result[2].Value,
-                        result[3].Value,
-                        result[4].Value
+                        (CardValue)values[values.Length - 1],
+                        (CardValue)values[values.Length - 2],
+                        (CardValue)values[values.Length - 3],
+                        (CardValue)values[values.Length - 4],
+                        (CardValue)values[values.Length - 5]
                     });
 
+                    EntryPoint.Put(4, 4);
                     return true;
                 }
             }
 
+            EntryPoint.Put(4, 4);
             return false;
         }
 
-        private static bool IsStraight(Card[] cards, ref IHandValue value)
+        private static bool IsStraight(int[] values, ref IHandValue value)
         {
-            List<Card> listCards = cards.ToList();
-            listCards = listCards.OrderBy(c => c.Value).ToList();
+            EntryPoint.StartReporting(5);
+
+            values.QuickSort();
 
             int consec = 1;
 
-            if (listCards[listCards.Count - 1].Value == CardValue.Ace && listCards[0].Value == CardValue.Deuce)
+            if (values[values.Length - 1] == 12 && values[0] == 0)
             {
                 consec = 2;
             }
 
-            for (int i = 1; i < listCards.Count; i++)
+            for (int i = 1; i < values.Length; i++)
             {
-                if (listCards[i].Value == listCards[i - 1].Value)
+                if (values[i] == values[i - 1])
                 {
                     continue;
                 }
 
-                if ((int)(listCards[i].Value - 1) == (int)listCards[i - 1].Value)
+                if ((int)(values[i] - 1) == (int)values[i - 1])
                 {
                     consec++;
                 }
@@ -558,88 +620,206 @@ namespace DecisionDealer.Model
 
                 if (consec >= 5)
                 {
-                    if (i != listCards.Count - 1 && listCards[i].Value + 1 == listCards[i + 1].Value)
+                    if (i != values.Length - 1 && values[i] + 1 == values[i + 1])
                     {
                         continue;
                     }
 
-                    value = new Straight(listCards[i].Value);
+                    value = new Straight((CardValue)values[i]);
                     return true;
                 }
             }
 
+            EntryPoint.Put(5, 5);
             return false;
         }
 
-        private static bool IsTreeOfAKind(Card[] cards, ref IHandValue value)
+        private static bool IsStraight(Card[] cards, ref IHandValue value)
         {
-            for (int i = 0; i < 13; i++)
+            EntryPoint.StartReporting(5);
+
+            int[] values = new int[cards.Length];
+
+            for (int i = 0; i < cards.Length; i++)
             {
-                if (cards.Where(c => c.Value == ((CardValue)i)).ToArray().Length == 3)
+                values[i] = (int)cards[i].Value;
+            }
+
+            values.QuickSort();
+
+            int consec = 1;
+
+            if (values[values.Length - 1] == 12 && values[0] == 0)
+            {
+                consec = 2;
+            }
+
+            for (int i = 1; i < values.Length; i++)
+            {
+                if (values[i] == values[i - 1])
                 {
-                    Card[] result = cards.Where(c => c.Value != ((CardValue)i)).OrderBy(c => Math.Abs((int)c.Value - 12)).ToArray();
+                    continue;
+                }
 
-                    value = new TreeOfAKind((CardValue)i, new CardValue[]
+                if ((int)(values[i] - 1) == (int)values[i - 1])
+                {
+                    consec++;
+                }
+                else
+                {
+                    consec = 1;
+                }
+
+                if (consec >= 5)
+                {
+                    if (i != values.Length - 1 && values[i] + 1 == values[i + 1])
                     {
-                        result[0].Value,
-                        result[1].Value
-                    });
+                        continue;
+                    }
 
+                    value = new Straight((CardValue)values[i]);
                     return true;
                 }
             }
 
+            EntryPoint.Put(5, 5);
             return false;
         }
 
-        private static bool IsDoublePair(Card[] cards, ref IHandValue value)
+        private static bool IsTreeOfAKind(int[] values, ref IHandValue value)
         {
+            EntryPoint.StartReporting(6);
+
+            for (int valueI = 0; valueI < 13; valueI++)
+            {
+                int count = 0;
+
+                for (int cardI = 0; cardI < values.Length; cardI++)
+                {
+                    if (values[cardI] == valueI)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 3)
+                {
+                    CardValue[] kickers = new CardValue[] { CardValue.Tray, CardValue.Deuce };
+
+                    for (int cardI = 0; cardI < values.Length; cardI++)
+                    {
+                        if (values[cardI] != valueI && values[cardI] > (int)kickers[0])
+                        {
+                            kickers[0] = (CardValue)values[cardI];
+                        }
+                        else if (values[cardI] != valueI && values[cardI] > (int)kickers[1])
+                        {
+                            kickers[1] = (CardValue)values[cardI];
+                        }
+                    }
+
+                    value = new TreeOfAKind((CardValue)valueI, kickers);
+                    EntryPoint.Put(6, 6);
+                    return true;
+                }
+            }
+
+            EntryPoint.Put(6, 6);
+            return false;
+        }
+
+        private static bool IsDoublePair(int[] values, ref IHandValue value)
+        {
+            EntryPoint.StartReporting(7);
+
             int countOfPairs = 0;
             int higherPair = 0;
             int lowerPair = 0;
 
-            for (int i = 0; i < 13; i++)
+            for (int valueI = 0; valueI < 13; valueI++)
             {
-                if (cards.Where(c => c.Value == ((CardValue)i)).ToArray().Length == 2)
+                int count = 0;
+
+                for (int cardI = 0; cardI < values.Length; cardI++)
+                {
+                    if (values[cardI] == valueI)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count == 2)
                 {
                     countOfPairs++;
                     lowerPair = higherPair;
-                    higherPair = i;
+                    higherPair = valueI;
                 }
             }
 
             if (countOfPairs >= 2)
             {
-                CardValue kicker = cards.Where(c => (int)c.Value != higherPair && (int)c.Value != lowerPair).Max(c => c.Value);
+                CardValue kicker = CardValue.Deuce;
+
+                for (int cardI = 0; cardI < values.Length; cardI++)
+                {
+                    if (values[cardI] != higherPair && values[cardI] != lowerPair && values[cardI] > (int)kicker)
+                    {
+                        kicker = (CardValue)values[cardI];
+                    }
+                }
 
                 value = new DoublePair((CardValue)higherPair, (CardValue)lowerPair, kicker);
+                EntryPoint.Put(7, 7);
                 return true;
             }
 
+            EntryPoint.Put(7, 7);
             return false;
         }
 
-        private static bool IsPair(Card[] cards, ref IHandValue value)
+        private static bool IsPair(int[] values, ref IHandValue value)
         {
-            for (int i = 0; i < 13; i++)
+            EntryPoint.StartReporting(8);
+
+            for (int valueI = 0; valueI < 13; valueI++)
             {
-                Card[] result = cards.Where(c => c.Value == ((CardValue)i)).ToArray();
+                int count = 0;
 
-                if (result.Length == 2)
+                for (int cardI = 0; cardI < values.Length; cardI++)
                 {
-                    Card[] sorted = cards.Where(c => c.Value != ((CardValue)i)).OrderBy(c => Math.Abs((int)c.Value - 12)).ToArray();
-
-                    value = new Pair((CardValue)i, new CardValue[]
+                    if (values[cardI] == valueI)
                     {
-                        sorted[0].Value,
-                        sorted[1].Value,
-                        sorted[2].Value
-                    });
+                        count++;
+                    }
+                }
 
+                if (count == 2)
+                {
+                    CardValue[] kickers = new CardValue[] { CardValue.Four, CardValue.Tray, CardValue.Deuce };
+
+                    for (int cardI = 0; cardI < values.Length; cardI++)
+                    {
+                        if (values[cardI] != valueI && values[cardI] > (int)kickers[0])
+                        {
+                            kickers[0] = (CardValue)values[cardI];
+                        }
+                        else if (values[cardI] != valueI && values[cardI] > (int)kickers[1])
+                        {
+                            kickers[1] = (CardValue)values[cardI];
+                        }
+                        else if (values[cardI] != valueI && values[cardI] > (int)kickers[2])
+                        {
+                            kickers[2] = (CardValue)values[cardI];
+                        }
+                    }
+
+                    value = new Pair((CardValue)valueI, kickers);
+                    EntryPoint.Put(8, 8);
                     return true;
                 }
             }
 
+            EntryPoint.Put(8, 8);
             return false;
         }
     }

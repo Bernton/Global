@@ -14,3 +14,4 @@ D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\Decision
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.Properties.Resources.resources
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.View.FormMain.resources
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csproj.GenerateResource.Cache
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csprojResolveAssemblyReference.cache

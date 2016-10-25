@@ -17,7 +17,6 @@ namespace DecisionDealer.View
         private double _canvasRatio = Resources.Table.Width / (double)Resources.Table.Height;
 
         //private int[] _winners = null;
-        private double _percentageCorrect = 100;
 
         private int round = 0;
         private int right = 0;
@@ -35,7 +34,7 @@ namespace DecisionDealer.View
             778, 154,
             886, 263,
             848, 395,
-            692, 421
+            692, 411
         };
 
         public FormMain()
@@ -57,7 +56,7 @@ namespace DecisionDealer.View
 
             if (round != 0)
             {
-                _labelCash.Text = string.Format("Hands correct: {0} %", Math.Round((double)right / round * 100.0), 1);
+                _labelCorrect.Text = string.Format("Hands correct: {0} %", Math.Round((double)right / round * 100.0), 1);
             }
 
             round++;
@@ -97,6 +96,9 @@ namespace DecisionDealer.View
             Task.Factory.StartNew(() =>
             {
                 _handStats = simulator.Simulate(holeCards);
+
+                EntryPoint.SetCaption(0, "GetHandValue()");
+                EntryPoint.ReportSections();
 
                 Invoke((MethodInvoker)delegate
                 {
@@ -204,52 +206,42 @@ namespace DecisionDealer.View
 
         private void OnButtonCallClick(object sender, EventArgs e)
         {
-            int count = _table.Players.Count(c => c != null);
-
-            double equity = _handStats[0].WinPercentage + (_handStats[0].TiePercentage / (double)count);
-            string turnout = "";
-
-            if (equity > 1.0 / count * 100.0)
-            {
-                right++;
-                turnout = "Correct call";
-                _percentageCorrect++;
-            }
-            else
-            {
-                turnout = "Wrong call";
-                _percentageCorrect--;
-            }
-
-            _labelResult.Text = string.Format("{0}: {1} % (Avg. {2} %)", turnout, Math.Round(equity, 2), Math.Round(1.0 / count * 100.0, 2));
-
-            _buttonCall.Enabled = false;
-            _buttonFold.Enabled = false;
-            _buttonNext.Enabled = true;
-            _panelCanvas.Invalidate();
+            ShowResult(true);
         }
 
         private void OnButtonFoldClick(object sender, EventArgs e)
         {
-            int count = _table.Players.Count(c => c != null);
-            double equity = _handStats[0].WinPercentage + (_handStats[0].TiePercentage / (double)count);
-            string turnout = "";
+            ShowResult(false);
+        }
 
-            if (equity > 1.0 / count * 100.0)
+        private void ShowResult(bool call)
+        {
+            int count = _table.Players.Count(c => c != null);
+            double equity = _handStats[0].WinPercentage + _handStats[0].TieEquity;
+
+            string turnout = "";
+            bool overEquity = equity > 1.0 / count * 100.0;
+
+            if(call && overEquity)
             {
-                turnout = "Wrong fold";
-                _percentageCorrect++;
+                right++;
+                turnout = "Correct call";
             }
-            else
+            else if(call && !overEquity)
+            {
+                turnout = "Wrong call";
+            }
+            else if(!call && !overEquity)
             {
                 right++;
                 turnout = "Correct fold";
-                _percentageCorrect--;
+            }
+            else
+            {
+                turnout = "Wrong fold";
             }
 
             _labelResult.Text = string.Format("{0}: {1} % (Avg. {2} %)", turnout, Math.Round(equity, 2), Math.Round(1.0 / count * 100.0, 2));
-
-            _percentageCorrect -= 0.5;
 
             _buttonCall.Enabled = false;
             _buttonFold.Enabled = false;

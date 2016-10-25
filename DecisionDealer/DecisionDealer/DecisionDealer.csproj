@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Extensions.cs" />
     <Compile Include="Source\Model\Card.cs" />
     <Compile Include="Source\Model\CardImageProvider.cs" />
     <Compile Include="Source\Model\Deck.cs" />
