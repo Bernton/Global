@@ -105,11 +105,12 @@
             // 
             this._textBoxFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._textBoxFreq.Font = new System.Drawing.Font("Times New Roman", 14.25F);
-            this._textBoxFreq.Location = new System.Drawing.Point(749, 648);
+            this._textBoxFreq.Location = new System.Drawing.Point(746, 643);
             this._textBoxFreq.Name = "_textBoxFreq";
             this._textBoxFreq.Size = new System.Drawing.Size(100, 29);
             this._textBoxFreq.TabIndex = 8;
             this._textBoxFreq.Text = "50";
+            this._textBoxFreq.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnFormMainKeyDown);
             // 
             // _labelShowFreq
             // 
@@ -160,10 +161,12 @@
             this.Controls.Add(this._buttonCall);
             this.Controls.Add(this._panelLayout);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(700, 420);
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Decision Dealer Version X";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnFormMainKeyDown);
             this._panelLayout.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

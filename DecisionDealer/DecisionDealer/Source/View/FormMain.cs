@@ -49,7 +49,7 @@ namespace DecisionDealer.View
         {
             int freqInput;
 
-            if(int.TryParse(_textBoxFreq.Text, out freqInput))
+            if (int.TryParse(_textBoxFreq.Text, out freqInput))
             {
                 _table.ShowFrequency = freqInput;
             }
@@ -222,16 +222,16 @@ namespace DecisionDealer.View
             string turnout = "";
             bool overEquity = equity > 1.0 / count * 100.0;
 
-            if(call && overEquity)
+            if (call && overEquity)
             {
                 right++;
                 turnout = "Correct call";
             }
-            else if(call && !overEquity)
+            else if (call && !overEquity)
             {
                 turnout = "Wrong call";
             }
-            else if(!call && !overEquity)
+            else if (!call && !overEquity)
             {
                 right++;
                 turnout = "Correct fold";
@@ -254,6 +254,48 @@ namespace DecisionDealer.View
         {
             ResetTable();
             _buttonNext.Enabled = false;
+        }
+
+        private void OnFormMainKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.F:
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    if (_buttonFold.Enabled)
+                    {
+                        OnButtonFoldClick(null, null);
+                    }
+                    break;
+
+                case Keys.C:
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    if (_buttonCall.Enabled)
+                    {
+                        OnButtonCallClick(null, null);
+                    }
+                    break;
+
+                case Keys.Enter:
+                case Keys.Space:
+                    e.Handled = true;
+                    e.SuppressKeyPress = true;
+
+                    if (_buttonNext.Enabled)
+                    {
+                        OnButtonNextClick(null, null);
+                    }
+
+                    break;
+
+                case Keys.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
         }
     }
 }
