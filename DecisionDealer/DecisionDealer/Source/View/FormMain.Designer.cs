@@ -166,6 +166,7 @@
             this.Name = "FormMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Decision Dealer Version X";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormMainClosed);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnFormMainKeyDown);
             this._panelLayout.ResumeLayout(false);
             this.ResumeLayout(false);

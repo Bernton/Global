@@ -297,5 +297,10 @@ namespace DecisionDealer.View
                     break;
             }
         }
+
+        private void OnFormMainClosed(object sender, FormClosedEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

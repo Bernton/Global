@@ -710,6 +710,7 @@ namespace DecisionDealer.Model
                     {
                         if (values[cardI] != valueI && values[cardI] > (int)kickers[0])
                         {
+                            kickers[1] = kickers[0];
                             kickers[0] = (CardValue)values[cardI];
                         }
                         else if (values[cardI] != valueI && values[cardI] > (int)kickers[1])
@@ -801,10 +802,13 @@ namespace DecisionDealer.Model
                     {
                         if (values[cardI] != valueI && values[cardI] > (int)kickers[0])
                         {
+                            kickers[2] = kickers[1];
+                            kickers[1] = kickers[0];
                             kickers[0] = (CardValue)values[cardI];
                         }
                         else if (values[cardI] != valueI && values[cardI] > (int)kickers[1])
                         {
+                            kickers[2] = kickers[1];
                             kickers[1] = (CardValue)values[cardI];
                         }
                         else if (values[cardI] != valueI && values[cardI] > (int)kickers[2])
