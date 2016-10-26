@@ -34,7 +34,7 @@ namespace DecisionDealer.Model
                 }
             }
 
-                    HandStatistic[] results = new HandStatistic[holeCards.Length];
+            HandStatistic[] results = new HandStatistic[holeCards.Length];
             Card[] deck = GenerateDeck(holeCards);
 
             for (int i = 0; i < results.Length; i++)
@@ -87,7 +87,7 @@ namespace DecisionDealer.Model
                         }
                         else
                         {
-                            results[winners[tieI]].TieSplit += (winners.Length- results[winners[tieI]].TieSplit) / results[winners[tieI]].Ties;
+                            results[winners[tieI]].TieSplit += (winners.Length - results[winners[tieI]].TieSplit) / results[winners[tieI]].Ties;
                         }
                     }
                 }

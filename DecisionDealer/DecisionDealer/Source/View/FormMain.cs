@@ -123,8 +123,17 @@ namespace DecisionDealer.View
 
             Font resultFont = new Font("Arial", Round(18 * sizeFactor));
             string result;
+            double avg = 0;
+            double maxEquityDiff = 0;
 
-            for (int i = 0; i < _table.Players.Length; i++)
+            if (_handStats != null && _displayResults)
+            {
+                avg = 100.0 / _handStats.Length;
+
+                maxEquityDiff = (_handStats.Max(c => c.Equity) - _handStats.Min(c => c.Equity));
+            }
+
+                for (int i = 0; i < _table.Players.Length; i++)
             {
                 if (_table.Players[i] != null)
                 {
@@ -157,11 +166,23 @@ namespace DecisionDealer.View
                     g.DrawImage(firstCardImage, seatPosition.X - cardSize.Width, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
                     g.DrawImage(secondCardImage, seatPosition.X, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
 
-                    if(_handStats != null && _displayResults)
+                    if (_handStats != null && _displayResults)
                     {
                         result = Math.Round(_handStats[playerCount].Equity, 2).ToString() + " %";
 
-            g.FillRectangle(Brushes.White, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
+                        Color rectColor = new Color();
+                        if(_handStats[playerCount].Equity > avg)
+                        {
+                            rectColor = Color.FromArgb(0, 185 + (int)(60 * ((_handStats[playerCount].Equity - avg) / maxEquityDiff)), 0);
+                        }
+                        else
+                        {
+                            rectColor = Color.FromArgb( 185 + (int)(60 * ((avg - _handStats[playerCount].Equity)  / maxEquityDiff)), 0, 0);
+                        }
+
+                        Brush rectBrush = new SolidBrush(rectColor);
+
+                        g.FillRectangle(rectBrush, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
                         g.DrawRectangle(Pens.Gray, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
                         g.DrawString(result, resultFont, Brushes.Black, seatPosition.X - Round(g.MeasureString(result, resultFont).Width / 2.2), seatPosition.Y - Round(resultFont.Size / 1.4));
                     }
