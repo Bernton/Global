@@ -26,6 +26,14 @@
             }
         }
 
+        public double Equity
+        {
+            get
+            {
+                return WinPercentage + TieEquity;
+            }
+        }
+
         public int SampleSize { get; set; }
         public int Wins { get; set; }
         public int Ties { get; set; }

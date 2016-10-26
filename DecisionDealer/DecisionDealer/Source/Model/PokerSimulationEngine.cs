@@ -24,7 +24,17 @@ namespace DecisionDealer.Model
 
         public HandStatistic[] Simulate(Card[][] holeCards)
         {
-            HandStatistic[] results = new HandStatistic[holeCards.Length];
+            List<int> randomHands = new List<int>();
+
+            for (int i = 0; i < holeCards.Length; i++)
+            {
+                if (holeCards[i][0] == null && holeCards[i][1] == null)
+                {
+                    randomHands.Add(i);
+                }
+            }
+
+                    HandStatistic[] results = new HandStatistic[holeCards.Length];
             Card[] deck = GenerateDeck(holeCards);
 
             for (int i = 0; i < results.Length; i++)
@@ -82,6 +92,32 @@ namespace DecisionDealer.Model
                     }
                 }
 
+            }
+
+
+            if (randomHands.Count > 1)
+            {
+                float totalWins = 0;
+                float totalTies = 0;
+                double totalTieSplit = 0;
+
+                for (int i = 0; i < randomHands.Count; i++)
+                {
+                    totalWins += results[randomHands[i]].Wins;
+                    totalTies += results[randomHands[i]].Ties;
+                    totalTieSplit += results[randomHands[i]].TieSplit;
+                }
+
+                double avgWins = totalWins / (double)randomHands.Count;
+                double avgTies = totalTies / (double)randomHands.Count;
+                double avgTieSplit = totalTieSplit / (double)randomHands.Count;
+
+                for (int i = 0; i < randomHands.Count; i++)
+                {
+                    results[randomHands[i]].Wins = (int)avgWins;
+                    results[randomHands[i]].Ties = (int)avgTies;
+                    results[randomHands[i]].TieSplit = (int)avgTieSplit;
+                }
             }
 
             return results;

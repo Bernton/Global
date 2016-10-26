@@ -16,6 +16,7 @@ namespace DecisionDealer.View
         private PokerTable _table = new PokerTable();
         private double _canvasRatio = Resources.Table.Width / (double)Resources.Table.Height;
 
+        private bool _displayResults = false;
         //private int[] _winners = null;
 
         private int round = 0;
@@ -118,11 +119,17 @@ namespace DecisionDealer.View
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
 
             double sizeFactor = _panelCanvas.Width / (double)Resources.Table.Width;
+            int playerCount = 0;
+
+            Font resultFont = new Font("Arial", Round(18 * sizeFactor));
+            string result;
 
             for (int i = 0; i < _table.Players.Length; i++)
             {
                 if (_table.Players[i] != null)
                 {
+
+
                     Image firstCardImage;
                     Image secondCardImage;
 
@@ -150,10 +157,21 @@ namespace DecisionDealer.View
                     g.DrawImage(firstCardImage, seatPosition.X - cardSize.Width, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
                     g.DrawImage(secondCardImage, seatPosition.X, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
 
+                    if(_handStats != null && _displayResults)
+                    {
+                        result = Math.Round(_handStats[playerCount].Equity, 2).ToString() + " %";
+
+            g.FillRectangle(Brushes.White, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
+                        g.DrawRectangle(Pens.Gray, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
+                        g.DrawString(result, resultFont, Brushes.Black, seatPosition.X - Round(g.MeasureString(result, resultFont).Width / 2.2), seatPosition.Y - Round(resultFont.Size / 1.4));
+                    }
+
                     //if (_winners != null && _winners.Contains(i))
                     //{
                     //    g.DrawRectangle(new Pen(Brushes.Gray, 3), seatPosition.X - Round(cardSize.Width * 1.05), seatPosition.Y - Round(cardSize.Height / 2 * 1.1), Round(cardSize.Width * 2.1), Round(cardSize.Height * 1.1));
                     //}
+
+                    playerCount++;
                 }
             }
 
@@ -216,6 +234,8 @@ namespace DecisionDealer.View
 
         private void ShowResult(bool call)
         {
+            _displayResults = true;
+
             int count = _table.Players.Count(c => c != null);
             double equity = _handStats[0].WinPercentage + _handStats[0].TieEquity;
 
@@ -253,6 +273,8 @@ namespace DecisionDealer.View
         private void OnButtonNextClick(object sender, EventArgs e)
         {
             ResetTable();
+            _handStats = null;
+            _displayResults = false;
             _buttonNext.Enabled = false;
         }
 

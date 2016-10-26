@@ -21,6 +21,7 @@ namespace DecisionDealer
         private static List<double> totals = new List<double>();
         private static List<int> counts = new List<int>();
         private static List<Stopwatch> watches = new List<Stopwatch>();
+        
 
         public static void StartReporting(int watchIndex)
         {
