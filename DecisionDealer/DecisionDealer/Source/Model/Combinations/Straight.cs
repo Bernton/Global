@@ -15,9 +15,12 @@ namespace DecisionDealer.Model
             Highest = highest;
         }
 
-        public int GetRank()
+        public int Rank
         {
-            return 5;
+            get
+            {
+                return 5;
+            }
         }
 
         public override string ToString()

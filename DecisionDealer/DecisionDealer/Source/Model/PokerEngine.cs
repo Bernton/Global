@@ -5,6 +5,8 @@ namespace DecisionDealer.Model
 {
     public static class PokerEngine
     {
+        #region Methods
+
         public static int[] GetWinnerValueIndexes(IHandValue[] handValues)
         {
             bool isSame;
@@ -99,6 +101,73 @@ namespace DecisionDealer.Model
             return sameAsLead.ToArray();
         }
 
+        public static IHandValue GetHandValue(Card[] cards)
+        {
+            IHandValue handValue = null;
+
+            int[] values = new int[cards.Length];
+
+            for (int i = 0; i < cards.Length; i++)
+            {
+                values[i] = (int)cards[i].Value;
+            }
+
+            if (IsStraightFlush(cards, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsFourOfAKind(values, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsFullHouse(values, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsFlush(cards, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsStraight(values, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsTreeOfAKind(values, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsDoublePair(values, ref handValue))
+            {
+                return handValue;
+            }
+
+            if (IsPair(values, ref handValue))
+            {
+                return handValue;
+            }
+
+            EntryPoint.StartReporting(9);
+
+            values.QuickSort();
+            CardValue[] best5 = new CardValue[]
+            {
+                (CardValue)values[6],
+                (CardValue)values[5],
+                (CardValue)values[4],
+                (CardValue)values[3],
+                (CardValue)values[2]
+            };
+
+            EntryPoint.Put(9, 9);
+            return new HighCard(best5);
+        }
+
         public static bool IsCompetitorStronger(IHandValue currentlyBest, IHandValue competitor, out bool isSame)
         {
             isSame = false;
@@ -108,11 +177,11 @@ namespace DecisionDealer.Model
                 return true;
             }
 
-            if (currentlyBest.GetRank() < competitor.GetRank())
+            if (currentlyBest.Rank < competitor.Rank)
             {
                 return false;
             }
-            else if (currentlyBest.GetRank() > competitor.GetRank())
+            else if (currentlyBest.Rank > competitor.Rank)
             {
                 return true;
             }
@@ -347,73 +416,6 @@ namespace DecisionDealer.Model
             }
 
 
-        }
-
-        public static IHandValue GetHandValue(Card[] cards)
-        {
-            IHandValue handValue = null;
-
-            int[] values = new int[cards.Length];
-
-            for (int i = 0; i < cards.Length; i++)
-            {
-                values[i] = (int)cards[i].Value;
-            }
-
-            if (IsStraightFlush(cards, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsFourOfAKind(values, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsFullHouse(values, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsFlush(cards, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsStraight(values, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsTreeOfAKind(values, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsDoublePair(values, ref handValue))
-            {
-                return handValue;
-            }
-
-            if (IsPair(values, ref handValue))
-            {
-                return handValue;
-            }
-
-            EntryPoint.StartReporting(9);
-
-            values.QuickSort();
-            CardValue[] best5 = new CardValue[]
-            {
-                (CardValue)values[6],
-                (CardValue)values[5],
-                (CardValue)values[4],
-                (CardValue)values[3],
-                (CardValue)values[2]
-            };
-
-            EntryPoint.Put(9, 9);
-            return new HighCard(best5);
         }
 
         private static bool IsStraightFlush(Card[] cards, ref IHandValue value)
@@ -826,5 +828,7 @@ namespace DecisionDealer.Model
             EntryPoint.Put(8, 8);
             return false;
         }
+
+        #endregion
     }
 }

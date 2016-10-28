@@ -1,15 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace DecisionDealer.Model
 {
     public class PokerSimulationEngine
     {
+        #region Fields
+
         private Random _rnd = new Random();
+
+        #endregion
+
+        #region Properties & events
+
         public int Iterations { get; set; }
 
+        public event PercentStepComplete PercentComplete;
+
+        #endregion
+
+        #region Constructors
 
         public PokerSimulationEngine()
         {
@@ -21,6 +32,9 @@ namespace DecisionDealer.Model
             Iterations = iterations;
         }
 
+        #endregion
+
+        #region Methods
 
         public HandStatistic[] Simulate(Card[][] holeCards)
         {
@@ -68,7 +82,6 @@ namespace DecisionDealer.Model
                     holeCards[rndIndex[i2][0]][rndIndex[i2][1]] = rndCards[Math.Abs(i2 - 5 - rndIndex.Count + 1)];
                 }
 
-
                 int[] winners = PokerEngine.GetWinnerValueIndexes(holeCards, new Card[] { rndCards[0], rndCards[1], rndCards[2], rndCards[3], rndCards[4] });
 
                 if (winners.Length == 1)
@@ -92,6 +105,13 @@ namespace DecisionDealer.Model
                     }
                 }
 
+                if (i != 0)
+                {
+                    if (i % (int)(Iterations / 100.0) == 0)
+                    {
+                        PercentComplete?.Invoke((int)(i / (double)Iterations * 100.0), i);
+                    }
+                }
             }
 
 
@@ -122,11 +142,6 @@ namespace DecisionDealer.Model
 
             return results;
         }
-
-        //public double[] Simulate(Card[][] holeCards, Card[] communityCards)
-        //{
-
-        //}
 
         private Card[] GetRandom(Card[] deck, int amount)
         {
@@ -168,5 +183,7 @@ namespace DecisionDealer.Model
 
             return cards.ToArray();
         }
+
+        #endregion
     }
 }

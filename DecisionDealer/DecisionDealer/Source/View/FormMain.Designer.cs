@@ -34,7 +34,7 @@
             this._labelCorrect = new System.Windows.Forms.Label();
             this._buttonNext = new System.Windows.Forms.Button();
             this._labelResult = new System.Windows.Forms.Label();
-            this._textBoxFreq = new System.Windows.Forms.TextBox();
+            this._textBoxFrequency = new System.Windows.Forms.TextBox();
             this._labelShowFreq = new System.Windows.Forms.Label();
             this._panelLayout = new DecisionDealer.View.BufferedPanel();
             this._panelCanvas = new DecisionDealer.View.BufferedPanel();
@@ -44,7 +44,6 @@
             // _buttonFold
             // 
             this._buttonFold.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this._buttonFold.Enabled = false;
             this._buttonFold.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._buttonFold.Location = new System.Drawing.Point(12, 625);
             this._buttonFold.Name = "_buttonFold";
@@ -57,7 +56,6 @@
             // _buttonCall
             // 
             this._buttonCall.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this._buttonCall.Enabled = false;
             this._buttonCall.Font = new System.Drawing.Font("Times New Roman", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this._buttonCall.Location = new System.Drawing.Point(12, 575);
             this._buttonCall.Name = "_buttonCall";
@@ -101,27 +99,28 @@
             this._labelResult.TabIndex = 7;
             this._labelResult.Text = "Correct";
             // 
-            // _textBoxFreq
+            // _textBoxFrequency
             // 
-            this._textBoxFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._textBoxFreq.Font = new System.Drawing.Font("Times New Roman", 14.25F);
-            this._textBoxFreq.Location = new System.Drawing.Point(746, 643);
-            this._textBoxFreq.Name = "_textBoxFreq";
-            this._textBoxFreq.Size = new System.Drawing.Size(100, 29);
-            this._textBoxFreq.TabIndex = 8;
-            this._textBoxFreq.Text = "50";
-            this._textBoxFreq.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnFormMainKeyDown);
+            this._textBoxFrequency.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._textBoxFrequency.Font = new System.Drawing.Font("Times New Roman", 14.25F);
+            this._textBoxFrequency.Location = new System.Drawing.Point(746, 643);
+            this._textBoxFrequency.Name = "_textBoxFrequency";
+            this._textBoxFrequency.Size = new System.Drawing.Size(100, 29);
+            this._textBoxFrequency.TabIndex = 8;
+            this._textBoxFrequency.Text = "50";
+            this._textBoxFrequency.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnFormMainKeyDown);
             // 
             // _labelShowFreq
             // 
             this._labelShowFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._labelShowFreq.AutoSize = true;
+            this._labelShowFreq.BackColor = System.Drawing.Color.Transparent;
             this._labelShowFreq.Font = new System.Drawing.Font("Times New Roman", 14.25F);
-            this._labelShowFreq.Location = new System.Drawing.Point(492, 651);
+            this._labelShowFreq.Location = new System.Drawing.Point(450, 647);
             this._labelShowFreq.Name = "_labelShowFreq";
-            this._labelShowFreq.Size = new System.Drawing.Size(251, 21);
+            this._labelShowFreq.Size = new System.Drawing.Size(290, 21);
             this._labelShowFreq.TabIndex = 9;
-            this._labelShowFreq.Text = "Show opponent hands freq. (%)\r\n";
+            this._labelShowFreq.Text = "Show opponent hands frequency (%)\r\n";
             // 
             // _panelLayout
             // 
@@ -152,14 +151,14 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1048, 681);
-            this.Controls.Add(this._labelShowFreq);
-            this.Controls.Add(this._textBoxFreq);
+            this.Controls.Add(this._textBoxFrequency);
             this.Controls.Add(this._labelResult);
             this.Controls.Add(this._buttonNext);
             this.Controls.Add(this._labelCorrect);
             this.Controls.Add(this._buttonFold);
             this.Controls.Add(this._buttonCall);
             this.Controls.Add(this._panelLayout);
+            this.Controls.Add(this._labelShowFreq);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MinimumSize = new System.Drawing.Size(700, 420);
@@ -183,7 +182,7 @@
         private System.Windows.Forms.Label _labelCorrect;
         private System.Windows.Forms.Button _buttonNext;
         private System.Windows.Forms.Label _labelResult;
-        private System.Windows.Forms.TextBox _textBoxFreq;
+        private System.Windows.Forms.TextBox _textBoxFrequency;
         private System.Windows.Forms.Label _labelShowFreq;
     }
 }

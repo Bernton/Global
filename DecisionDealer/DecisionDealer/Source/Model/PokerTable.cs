@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DecisionDealer.Model
 {
     public class PokerTable
     {
+        #region Fields
+
         private int _freeSeats = 10;
         private Random _rnd = new Random();
         private Deck _deck = new Deck();
 
+        #endregion
+
+        #region Properties
+
         public int ShowFrequency { get; set; }
         public PokerPlayer[] Players { get; private set; }
         public List<Card> CommunityCards { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public PokerTable()
         {
@@ -21,36 +30,9 @@ namespace DecisionDealer.Model
             ResetTable();
         }
 
-        public int[] Playout()
-        {
-            SetCommunityCards(5);
+        #endregion
 
-            List<int> indexes = new List<int>();
-            IHandValue[] handValues = new IHandValue[10];
-
-            for (int i = 0; i < Players.Length; i++)
-            {
-                if (Players[i] != null)
-                {
-                    Players[i].RevealedCards = true;
-
-                    Card[] cards = new Card[7];
-
-                    for (int i2 = 0; i2 < 5; i2++)
-                    {
-                        cards[i2] = CommunityCards[i2];
-                    }
-
-                    cards[5] = Players[i].HoleCards[0];
-                    cards[6] = Players[i].HoleCards[1];
-
-                    handValues[i] = PokerEngine.GetHandValue(cards);
-                    indexes.Add(i);
-                }
-            }
-
-            return PokerEngine.GetWinnerValueIndexes(handValues.ToArray());
-        }
+        #region Methods
 
         public void SeatPlayer(PokerPlayer player)
         {
@@ -91,8 +73,6 @@ namespace DecisionDealer.Model
             _deck.Shuffle();
 
             int count = 0;
-
-            bool cardsShown = false;
 
             for (int i = 0; i < Players.Length; i++)
             {
@@ -158,6 +138,35 @@ namespace DecisionDealer.Model
             _freeSeats = 10;
         }
 
+        public int[] Playout()
+        {
+            SetCommunityCards(5);
+
+            List<int> indexes = new List<int>();
+            IHandValue[] handValues = new IHandValue[10];
+
+            for (int i = 0; i < Players.Length; i++)
+            {
+                if (Players[i] != null)
+                {
+                    Card[] cards = new Card[7];
+
+                    for (int i2 = 0; i2 < 5; i2++)
+                    {
+                        cards[i2] = CommunityCards[i2];
+                    }
+
+                    cards[5] = Players[i].HoleCards[0];
+                    cards[6] = Players[i].HoleCards[1];
+
+                    handValues[i] = PokerEngine.GetHandValue(cards);
+                    indexes.Add(i);
+                }
+            }
+
+            return PokerEngine.GetWinnerValueIndexes(handValues.ToArray());
+        }
+
         public bool IsTableFull()
         {
             if (_freeSeats == 0)
@@ -181,5 +190,7 @@ namespace DecisionDealer.Model
                 return false;
             }
         }
+
+        #endregion
     }
 }

@@ -2,11 +2,18 @@
 {
     public class HandStatistic
     {
+        #region Properties
+
+        public int SampleSize { get; set; }
+        public int Wins { get; set; }
+        public int Ties { get; set; }
+        public double TieSplit { get; set; } = 1;
+
         public double WinPercentage
         {
             get
             {
-                return (double)Wins / (double)SampleSize * 100.0;
+                return Wins / (double)SampleSize * 100.0;
             }
         }
 
@@ -14,7 +21,7 @@
         {
             get
             {
-                return (double)Ties / (double)SampleSize * 100.0;
+                return Ties / (double)SampleSize * 100.0;
             }
         }
 
@@ -22,7 +29,7 @@
         {
             get
             {
-                return (double)TiePercentage / TieSplit;
+                return TiePercentage / TieSplit;
             }
         }
 
@@ -34,10 +41,9 @@
             }
         }
 
-        public int SampleSize { get; set; }
-        public int Wins { get; set; }
-        public int Ties { get; set; }
-        public double TieSplit { get; set; } = 1;
+        #endregion
+
+        #region Constructors
 
         public HandStatistic()
         {
@@ -52,5 +58,7 @@
             Wins = wins;
             Ties = ties;
         }
+
+        #endregion
     }
 }

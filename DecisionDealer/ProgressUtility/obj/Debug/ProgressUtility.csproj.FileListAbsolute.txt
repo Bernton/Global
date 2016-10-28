@@ -1,0 +1,12 @@
+D:\Learning\ProgressUtility\ProgressUtility\ProgressUtility\bin\Debug\ProgressUtility.dll
+D:\Learning\ProgressUtility\ProgressUtility\ProgressUtility\bin\Debug\ProgressUtility.pdb
+D:\Learning\ProgressUtility\ProgressUtility\ProgressUtility\obj\Debug\ProgressUtility.csproj.GenerateResource.Cache
+D:\Learning\ProgressUtility\ProgressUtility\ProgressUtility\obj\Debug\ProgressUtility.dll
+D:\Learning\ProgressUtility\ProgressUtility\ProgressUtility\obj\Debug\ProgressUtility.pdb
+D:\Learning\ProgressUtility\ProgressUtility\ProgressUtility\obj\Debug\ProgressUtility.FormProgressDialog.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\bin\Debug\ProgressUtility.dll
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\bin\Debug\ProgressUtility.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Debug\ProgressUtility.FormProgressDialog.resources
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Debug\ProgressUtility.csproj.GenerateResource.Cache
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Debug\ProgressUtility.dll
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Debug\ProgressUtility.pdb

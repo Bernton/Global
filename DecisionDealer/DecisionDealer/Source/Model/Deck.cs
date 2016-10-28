@@ -5,15 +5,29 @@ namespace DecisionDealer.Model
 {
     public class Deck
     {
+        #region Fields
+
         public const int CardCount = 52;
         private readonly RNGCryptoServiceProvider _rngProvider = new RNGCryptoServiceProvider();
 
+        #endregion
+
+        #region Properties
+
         public Card[] Cards { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         public Deck()
         {
             Cards = GetSortedDeck();
         }
+
+        #endregion
+
+        #region Methods
 
         public void Shuffle()
         {
@@ -83,5 +97,7 @@ namespace DecisionDealer.Model
 
             return sortedDeck;
         }
+
+        #endregion
     }
 }

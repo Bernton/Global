@@ -17,9 +17,12 @@ namespace DecisionDealer.Model
             Kicker = kicker;
         }
 
-        public int GetRank()
+        public int Rank
         {
-            return 2;
+            get
+            {
+                return 2;
+            }
         }
 
         public override string ToString()

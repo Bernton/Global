@@ -1,5 +1,4 @@
 ﻿using DecisionDealer.View;
-
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,11 +16,12 @@ namespace DecisionDealer
             Application.Run(new FormMain());
         }
 
+        #region Stopwatch Engine (DELETE AFTER USE)
+
         private static List<string> captions = new List<string>();
         private static List<double> totals = new List<double>();
         private static List<int> counts = new List<int>();
         private static List<Stopwatch> watches = new List<Stopwatch>();
-        
 
         public static void StartReporting(int watchIndex)
         {
@@ -79,5 +79,7 @@ namespace DecisionDealer
                 Debug.WriteLine("Avg. " + (totals[i] / (double)counts[i]) + " ms\n\n");
             }
         }
+
+        #endregion
     }
 }

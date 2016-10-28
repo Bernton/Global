@@ -2,8 +2,13 @@
 {
     public class PokerPlayer
     {
+        #region Properties
+
         public Card[] HoleCards { get; set; }
-        public bool RevealedCards { get; set; }
+
+        #endregion
+
+        #region Constructors
 
         public PokerPlayer()
         {
@@ -18,5 +23,7 @@
                 secondCard
             };
         }
+
+        #endregion
     }
 }

@@ -20,9 +20,12 @@ namespace DecisionDealer.Model
             Values = values;
         }
 
-        public int GetRank()
+        public int Rank
         {
-            return 9;
+            get
+            {
+                return 9;
+            }
         }
 
         public override string ToString()

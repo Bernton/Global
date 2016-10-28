@@ -5,11 +5,17 @@ namespace DecisionDealer.Model
 {
     public static class CardImageProvider
     {
+        #region Fields
+
         private static Bitmap[] _cardImages;
         private static Bitmap _cardBack;
 
         private static int _cardWidth = 125;
         private static int _cardHeight = 181;
+
+        #endregion
+
+        #region Constructors
 
         static CardImageProvider()
         {
@@ -26,6 +32,9 @@ namespace DecisionDealer.Model
             _cardBack = CropImage(Resources.CardSprite, new Rectangle(0, 4 * _cardHeight, _cardWidth, _cardHeight));
         }
 
+        #endregion
+
+        #region Methods
 
         public static Bitmap GetCard(Card card)
         {
@@ -49,5 +58,7 @@ namespace DecisionDealer.Model
             g.DrawImage(source, 0, 0, section, GraphicsUnit.Pixel);
             return bitmap;
         }
+
+        #endregion
     }
 }

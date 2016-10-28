@@ -4,14 +4,24 @@ namespace DecisionDealer.Model
 {
     public class Card : ICloneable, IComparable
     {
+        #region Properties
+
+        public CardValue Value { get; private set; }
+        public CardSuit Suit { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
         public Card(CardValue value, CardSuit suit)
         {
             Value = value;
             Suit = suit;
         }
 
-        public CardValue Value { get; private set; }
-        public CardSuit Suit { get; private set; }
+        #endregion
+
+        #region Methods
 
         public override string ToString()
         {
@@ -36,5 +46,7 @@ namespace DecisionDealer.Model
                 return 1;
             }
         }
+
+        #endregion
     }
 }

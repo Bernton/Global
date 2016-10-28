@@ -1,10 +1,20 @@
-﻿namespace DecisionDealer.Model
+﻿using System;
+
+namespace DecisionDealer.Model
 {
     public class DoublePair : IHandValue
     {
         public CardValue HigherPair { get; private set; }
         public CardValue LowerPair { get; private set; }
         public CardValue Kicker { get; private set; }
+
+        public int Rank
+        {
+            get
+            {
+                return 7;
+            }
+        }
 
         public DoublePair(CardValue pair1, CardValue pair2, CardValue kicker)
         {
@@ -20,11 +30,6 @@
             }
 
             Kicker = kicker;
-        }
-
-        public int GetRank()
-        {
-            return 7;
         }
 
         public override string ToString()

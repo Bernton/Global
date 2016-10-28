@@ -22,9 +22,12 @@ namespace DecisionDealer.Model
             Kickers = kickers;
         }
 
-        public int GetRank()
+        public int Rank
         {
-            return 8;
+            get
+            {
+                return 8;
+            }
         }
 
         public override string ToString()

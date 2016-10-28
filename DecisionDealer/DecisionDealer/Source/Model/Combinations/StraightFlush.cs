@@ -9,9 +9,12 @@
             Highest = highest;
         }
 
-        public int GetRank()
+        public int Rank
         {
-            return 1;
+            get
+            {
+                return 1;
+            }
         }
 
         public override string ToString()

@@ -14,8 +14,5 @@ D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\Decision
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.Properties.Resources.resources
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.View.FormMain.resources
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csproj.GenerateResource.Cache
-D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\DecisionDealer.exe.manifest
-D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\DecisionDealer.application
-D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.TrustInfo.xml
-D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.exe.manifest
-D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.application
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\ProgressUtility.dll
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\ProgressUtility.pdb

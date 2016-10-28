@@ -59,10 +59,11 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+    <ApplicationManifest>Properties\t.CSharp.Class</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,11 +78,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Extensions.cs" />
+    <Compile Include="Source\Model\Extensions.cs" />
     <Compile Include="Source\Model\Card.cs" />
     <Compile Include="Source\Model\CardImageProvider.cs" />
     <Compile Include="Source\Model\Deck.cs" />
-    <Compile Include="Source\Model\Hand.cs" />
     <Compile Include="Source\Model\Combinations\DoublePair.cs" />
     <Compile Include="Source\Model\Combinations\Flush.cs" />
     <Compile Include="Source\Model\Combinations\FourOfAKind.cs" />
@@ -92,14 +92,15 @@
     <Compile Include="Source\Model\Combinations\Straight.cs" />
     <Compile Include="Source\Model\Combinations\StraightFlush.cs" />
     <Compile Include="Source\Model\Combinations\TreeOfAKind.cs" />
-    <Compile Include="Source\Model\HandRanking.cs" />
     <Compile Include="Source\Model\HandStatistic.cs" />
+    <Compile Include="Source\Model\PercentStepComplete.cs" />
     <Compile Include="Source\Model\PokerPlayer.cs" />
     <Compile Include="Source\Model\PokerEngine.cs" />
     <Compile Include="Source\Model\PokerSimulationEngine.cs" />
     <Compile Include="Source\Model\Suit.cs" />
     <Compile Include="Source\Model\PokerTable.cs" />
     <Compile Include="Source\Model\Value.cs" />
+    <Compile Include="Source\ViewModel\FormMainViewModel.cs" />
     <Compile Include="Source\View\BufferedPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -124,7 +125,6 @@
     <EmbeddedResource Include="Source\View\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -141,6 +141,7 @@
   <ItemGroup>
     <Content Include="Resources\Images\AppIcon.png" />
     <Content Include="Resources\Images\CardSprite.gif" />
+    <None Include="Properties\t.CSharp.Class" />
     <None Include="Resources\Images\Table.png" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,12 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProgressUtility\ProgressUtility.csproj">
+      <Project>{63e7f12e-3567-4db3-8fec-2118f52c1e50}</Project>
+      <Name>ProgressUtility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

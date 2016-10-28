@@ -17,9 +17,12 @@ namespace DecisionDealer.Model
             Pair = pair;
         }
 
-        public int GetRank()
+        public int Rank
         {
-            return 3;
+            get
+            {
+                return 3;
+            }
         }
 
         public override string ToString()
