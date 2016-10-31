@@ -4,6 +4,7 @@
     {
         #region Properties
 
+        public int SeatNumber { get; set; }
         public Card[] HoleCards { get; set; }
 
         #endregion

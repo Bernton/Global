@@ -8,7 +8,7 @@ namespace DecisionDealer.Model
     {
         #region Fields
 
-        private Random _rnd = new Random();
+        private Random _random = new Random();
 
         #endregion
 
@@ -22,11 +22,6 @@ namespace DecisionDealer.Model
 
         #region Constructors
 
-        public PokerSimulationEngine()
-        {
-            Iterations = 600000;
-        }
-
         public PokerSimulationEngine(int iterations)
         {
             Iterations = iterations;
@@ -36,19 +31,19 @@ namespace DecisionDealer.Model
 
         #region Methods
 
-        public HandStatistic[] Simulate(Card[][] holeCards)
+        public HandStatistic[] Simulate(Card[,] holeCards)
         {
-            List<int> randomHands = new List<int>();
+            List<int> randomHandIndexes = new List<int>();
 
-            for (int i = 0; i < holeCards.Length; i++)
+            for (int i = 0; i < holeCards.GetLength(0); i++)
             {
-                if (holeCards[i][0] == null && holeCards[i][1] == null)
+                if (holeCards[i, 0] == null && holeCards[i, 1] == null)
                 {
-                    randomHands.Add(i);
+                    randomHandIndexes.Add(i);
                 }
             }
 
-            HandStatistic[] results = new HandStatistic[holeCards.Length];
+            HandStatistic[] results = new HandStatistic[holeCards.GetLength(0)];
             Card[] deck = GenerateDeck(holeCards);
 
             for (int i = 0; i < results.Length; i++)
@@ -57,32 +52,30 @@ namespace DecisionDealer.Model
                 results[i].SampleSize = Iterations;
             }
 
-            List<int[]> rndIndex = new List<int[]>();
+            Card[] randomCards;
+            List<int[]> randomCardIndexes = new List<int[]>();
 
-            for (int i = 0; i < holeCards.Length; i++)
+            for (int playerI = 0; playerI < holeCards.GetLength(0); playerI++)
             {
-                for (int i2 = 0; i2 < holeCards[i].Length; i2++)
+                for (int cardI = 0; cardI < holeCards.GetLength(1); cardI++)
                 {
-                    if (holeCards[i][i2] == null)
+                    if (holeCards[playerI, cardI] == null)
                     {
-                        rndIndex.Add(new int[] { i, i2 });
+                        randomCardIndexes.Add(new int[] { playerI, cardI });
                     }
                 }
             }
 
-            Card[] rndCards;
-
-
             for (int i = 0; i < Iterations; i++)
             {
-                rndCards = GetRandom(deck, 5 + rndIndex.Count);
+                randomCards = GetRandomCards(deck, randomCardIndexes.Count + 5);
 
-                for (int i2 = 0; i2 < rndIndex.Count; i2++)
+                for (int playerI = 0; playerI < randomCardIndexes.Count; playerI++)
                 {
-                    holeCards[rndIndex[i2][0]][rndIndex[i2][1]] = rndCards[Math.Abs(i2 - 5 - rndIndex.Count + 1)];
+                    holeCards[randomCardIndexes[playerI][0], randomCardIndexes[playerI][1]] = randomCards[Math.Abs(playerI - randomCardIndexes.Count) + 4];
                 }
 
-                int[] winners = PokerEngine.GetWinnerValueIndexes(holeCards, new Card[] { rndCards[0], rndCards[1], rndCards[2], rndCards[3], rndCards[4] });
+                int[] winners = PokerEngine.GetWinnerValueIndexes(holeCards, randomCards.GetSubArray(0, 5));
 
                 if (winners.Length == 1)
                 {
@@ -114,51 +107,35 @@ namespace DecisionDealer.Model
                 }
             }
 
-
-            if (randomHands.Count > 1)
+            if (randomHandIndexes.Count > 1)
             {
                 float totalWins = 0;
                 float totalTies = 0;
                 double totalTieSplit = 0;
 
-                for (int i = 0; i < randomHands.Count; i++)
+                for (int i = 0; i < randomHandIndexes.Count; i++)
                 {
-                    totalWins += results[randomHands[i]].Wins;
-                    totalTies += results[randomHands[i]].Ties;
-                    totalTieSplit += results[randomHands[i]].TieSplit;
+                    totalWins += results[randomHandIndexes[i]].Wins;
+                    totalTies += results[randomHandIndexes[i]].Ties;
+                    totalTieSplit += results[randomHandIndexes[i]].TieSplit;
                 }
 
-                double avgWins = totalWins / (double)randomHands.Count;
-                double avgTies = totalTies / (double)randomHands.Count;
-                double avgTieSplit = totalTieSplit / (double)randomHands.Count;
+                double averageWins = totalWins / (double)randomHandIndexes.Count;
+                double averageTies = totalTies / (double)randomHandIndexes.Count;
+                double averageTieSplit = totalTieSplit / randomHandIndexes.Count;
 
-                for (int i = 0; i < randomHands.Count; i++)
+                for (int i = 0; i < randomHandIndexes.Count; i++)
                 {
-                    results[randomHands[i]].Wins = (int)avgWins;
-                    results[randomHands[i]].Ties = (int)avgTies;
-                    results[randomHands[i]].TieSplit = (int)avgTieSplit;
+                    results[randomHandIndexes[i]].Wins = (int)averageWins;
+                    results[randomHandIndexes[i]].Ties = (int)averageTies;
+                    results[randomHandIndexes[i]].TieSplit = (int)averageTieSplit;
                 }
             }
 
             return results;
         }
 
-        private Card[] GetRandom(Card[] deck, int amount)
-        {
-            List<Card> cards = deck.ToList();
-            Card[] result = new Card[amount];
-
-            for (int i = 0; i < result.Length; i++)
-            {
-                int randomNumber = _rnd.Next(cards.Count);
-                result[i] = cards[randomNumber];
-                cards.RemoveAt(randomNumber);
-            }
-
-            return result;
-        }
-
-        private Card[] GenerateDeck(Card[][] deadCards)
+        private Card[] GenerateDeck(Card[,] deadCards)
         {
             List<Card> cards = new List<Card>();
 
@@ -170,18 +147,33 @@ namespace DecisionDealer.Model
                 }
             }
 
-            for (int i = 0; i < deadCards.Length; i++)
+            for (int playerI = 0; playerI < deadCards.GetLength(0); playerI++)
             {
-                for (int i2 = 0; i2 < deadCards[i].Length; i2++)
+                for (int cardI = 0; cardI < deadCards.GetLength(1); cardI++)
                 {
-                    if (deadCards[i][i2] != null)
+                    if (deadCards[playerI, cardI] != null)
                     {
-                        cards.Remove(cards.First(c => (int)c.Suit * 13 + (int)c.Value == (int)deadCards[i][i2].Suit * 13 + (int)deadCards[i][i2].Value));
+                        cards.Remove(cards.First(c => (int)c.Suit * 13 + (int)c.Value == (int)deadCards[playerI, cardI].Suit * 13 + (int)deadCards[playerI, cardI].Value));
                     }
                 }
             }
 
             return cards.ToArray();
+        }
+
+        private Card[] GetRandomCards(Card[] deck, int amount)
+        {
+            List<Card> cards = deck.ToList();
+            Card[] result = new Card[amount];
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                int randomCardIndex = _random.Next(cards.Count);
+                result[i] = cards[randomCardIndex];
+                cards.RemoveAt(randomCardIndex);
+            }
+
+            return result;
         }
 
         #endregion

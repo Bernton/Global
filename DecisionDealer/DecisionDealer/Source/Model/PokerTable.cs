@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DecisionDealer.Model
 {
@@ -8,16 +7,16 @@ namespace DecisionDealer.Model
     {
         #region Fields
 
-        private int _freeSeats = 10;
-        private Random _rnd = new Random();
         private Deck _deck = new Deck();
+        private Random _random = new Random();
+        private List<int> _freeSeats = new List<int>();
 
         #endregion
 
         #region Properties
 
         public int ShowFrequency { get; set; }
-        public PokerPlayer[] Players { get; private set; }
+        public List<PokerPlayer> Players { get; private set; }
         public List<Card> CommunityCards { get; private set; }
 
         #endregion
@@ -26,6 +25,9 @@ namespace DecisionDealer.Model
 
         public PokerTable()
         {
+            Players = new List<PokerPlayer>();
+            CommunityCards = new List<Card>();
+
             ShowFrequency = 50;
             ResetTable();
         }
@@ -36,158 +38,80 @@ namespace DecisionDealer.Model
 
         public void SeatPlayer(PokerPlayer player)
         {
-            if (_freeSeats == 0)
+            if (Players.Count >= 9)
             {
                 throw new InvalidOperationException("Table is already full.");
             }
 
-            int seatIndex = _rnd.Next(_freeSeats) + 1;
-
-            for (int i = 0; i < Players.Length; i++)
-            {
-                if (Players[i] == null)
-                {
-                    seatIndex--;
-                }
-
-                if (seatIndex <= 0)
-                {
-                    SeatPlayer(player, i);
-                    return;
-                }
-            }
+            SeatPlayer(player, _freeSeats[_random.Next(_freeSeats.Count)]);
+            return;
         }
 
-        public void SetCommunityCards(int amount)
+        public void SeatPlayer(PokerPlayer player, int seatNumber)
         {
-            CommunityCards.Clear();
-
-            for (int i = 0; i < amount; i++)
+            if (!_freeSeats.Contains(seatNumber))
             {
-                CommunityCards.Add(_deck.Cards[Players.Count(c => c != null) * 2 + i]);
+                throw new InvalidOperationException("Seat is already taken.");
             }
+
+            player.SeatNumber = seatNumber;
+            Players.Add(player);
+            _freeSeats.Remove(seatNumber);
         }
 
         public void DealHoleCards()
         {
             _deck.Shuffle();
 
-            int count = 0;
-
-            for (int i = 0; i < Players.Length; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
-                if (Players[i] != null)
+                if (i == 0)
                 {
-
-                    if (count == 0)
+                    Players[i].HoleCards[0] = _deck.Cards[i * 2];
+                    Players[i].HoleCards[1] = _deck.Cards[i * 2 + 1];
+                }
+                else
+                {
+                    if (_random.Next(101) < ShowFrequency)
                     {
-                        Players[i].HoleCards[0] = _deck.Cards[count * 2];
-                        Players[i].HoleCards[1] = _deck.Cards[count * 2 + 1];
+                        Players[i].HoleCards[0] = _deck.Cards[i * 2];
                     }
                     else
                     {
-                        if (_rnd.Next(100) < ShowFrequency - 1)
-                        {
-                            Players[i].HoleCards[0] = _deck.Cards[count * 2];
-                        }
-                        else
-                        {
-                            Players[i].HoleCards[0] = null;
-                        }
-
-                        if (_rnd.Next(100) < ShowFrequency - 1)
-                        {
-                            Players[i].HoleCards[1] = _deck.Cards[count * 2 + 1];
-                        }
-                        else
-                        {
-                            Players[i].HoleCards[1] = null;
-                        }
-
+                        Players[i].HoleCards[0] = null;
                     }
 
-                    count++;
+                    if (_random.Next(101) < ShowFrequency)
+                    {
+                        Players[i].HoleCards[1] = _deck.Cards[i * 2 + 1];
+                    }
+                    else
+                    {
+                        Players[i].HoleCards[1] = null;
+                    }
                 }
-            }
-        }
-
-        public void SeatPlayer(PokerPlayer player, int seatIndex)
-        {
-            if (Players[seatIndex] == null)
-            {
-                Players[seatIndex] = player;
-                _freeSeats -= 1;
-            }
-            else
-            {
-                throw new ArgumentException(string.Format("Seat with number {0} was already taken.", seatIndex));
             }
         }
 
         public void ResetTable()
         {
-            CommunityCards = new List<Card>();
-            Players = new PokerPlayer[10];
-            _deck = new Deck();
+            _freeSeats.Clear();
+            CommunityCards.Clear();
+            Players.Clear();
 
-            for (int i = 0; i < Players.Length; i++)
+            for (int i = 1; i < 10; i++)
             {
-                Players[i] = null;
-            }
-
-            _freeSeats = 10;
-        }
-
-        public int[] Playout()
-        {
-            SetCommunityCards(5);
-
-            List<int> indexes = new List<int>();
-            IHandValue[] handValues = new IHandValue[10];
-
-            for (int i = 0; i < Players.Length; i++)
-            {
-                if (Players[i] != null)
-                {
-                    Card[] cards = new Card[7];
-
-                    for (int i2 = 0; i2 < 5; i2++)
-                    {
-                        cards[i2] = CommunityCards[i2];
-                    }
-
-                    cards[5] = Players[i].HoleCards[0];
-                    cards[6] = Players[i].HoleCards[1];
-
-                    handValues[i] = PokerEngine.GetHandValue(cards);
-                    indexes.Add(i);
-                }
-            }
-
-            return PokerEngine.GetWinnerValueIndexes(handValues.ToArray());
-        }
-
-        public bool IsTableFull()
-        {
-            if (_freeSeats == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
+                _freeSeats.Add(i);
             }
         }
 
-        public bool IsSeatFree(int seatNumber)
+        public void RevealCommunityCards(int amount)
         {
-            if (Players[seatNumber] == null)
+            CommunityCards.Clear();
+
+            for (int i = 0; i < amount; i++)
             {
-                return true;
-            }
-            else
-            {
-                return false;
+                CommunityCards.Add(_deck.Cards[Players.Count * 2 + i]);
             }
         }
 

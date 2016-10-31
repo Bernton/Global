@@ -46,10 +46,10 @@ namespace DecisionDealer.Model
             return sameAsLead.ToArray();
         }
 
-        public static int[] GetWinnerValueIndexes(Card[][] holeCards, Card[] communityCards)
+        public static int[] GetWinnerValueIndexes(Card[,] holeCards, Card[] communityCards)
         {
             bool isSame;
-            IHandValue[] handValues = new IHandValue[holeCards.Length];
+            IHandValue[] handValues = new IHandValue[holeCards.GetLength(0)];
 
             Card[] cards = new Card[]
             {
@@ -63,10 +63,10 @@ namespace DecisionDealer.Model
             };
 
 
-            for (int i = 0; i < holeCards.Length; i++)
+            for (int i = 0; i < holeCards.GetLength(0); i++)
             {
-                cards[0] = holeCards[i][0];
-                cards[1] = holeCards[i][1];
+                cards[0] = holeCards[i, 0];
+                cards[1] = holeCards[i, 1];
 
                 EntryPoint.StartReporting(0);
                 handValues[i] = GetHandValue(cards);

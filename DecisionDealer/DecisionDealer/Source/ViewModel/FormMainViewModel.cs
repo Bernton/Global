@@ -53,7 +53,7 @@ namespace DecisionDealer.ViewModel
 
             DisplayEquities = true;
 
-            int count = Table.Players.Count(c => c != null);
+            int count = Table.Players.Count;
             double equity = HandStatistics[0].WinPercentage + HandStatistics[0].TieEquity;
             string turnout = "";
             bool overEquity = equity > 1.0 / count * 100.0;
@@ -77,7 +77,7 @@ namespace DecisionDealer.ViewModel
                 turnout = "Wrong fold";
             }
 
-            return string.Format("{0}: {1} % (Avg. {2} %)", turnout, Math.Round(equity, 2), Math.Round(1.0 / count * 100.0, 2));
+            return string.Format("{0}: {1} % (Average {2} %)", turnout, Math.Round(equity, 2), Math.Round(1.0 / count * 100.0, 2));
         }
 
         public string ResetTable(string frequencyTextInput, Action actionAfterReset)
@@ -102,13 +102,14 @@ namespace DecisionDealer.ViewModel
 
             Table.ResetTable();
 
-            Random rnd = new Random();
+            Random random = new Random();
+            int playerAmount = random.Next(3, 11);
 
-            for (int i = 0; i < rnd.Next(2, Table.Players.Length); i++)
+            for (int i = 1; i < playerAmount; i++)
             {
                 PokerPlayer player = new PokerPlayer();
 
-                if (i == 0)
+                if (i == 1)
                 {
                     Table.SeatPlayer(player, i);
                 }
@@ -120,15 +121,16 @@ namespace DecisionDealer.ViewModel
 
             Table.DealHoleCards();
 
-
             PokerSimulationEngine simulator = new PokerSimulationEngine(100000);
             simulator.PercentComplete += OnPercentComplete;
             PokerPlayer[] players = Table.Players.Where(c => c != null).ToArray();
-            Card[][] holeCards = new Card[players.Length][];
+            Card[,] holeCards = new Card[players.Length, 2];
 
             for (int i = 0; i < players.Length; i++)
             {
-                holeCards[i] = (Card[])players[i].HoleCards.Clone();
+                Card[] clonedCards = (Card[])players[i].HoleCards.Clone();
+                holeCards[i, 0] = clonedCards[0];
+                holeCards[i, 1] = clonedCards[1];
             }
 
             Task.Factory.StartNew(() =>

@@ -10,3 +10,4 @@ D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Release\Progr
 D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Release\ProgressUtility.csproj.GenerateResource.Cache
 D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Release\ProgressUtility.dll
 D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Release\ProgressUtility.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\ProgressUtility\obj\Release\ProgressUtility.csprojResolveAssemblyReference.cache

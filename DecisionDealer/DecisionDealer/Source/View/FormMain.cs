@@ -140,6 +140,7 @@ namespace DecisionDealer.View
             _panelCanvas.Invalidate();
 
             _decisionMade = false;
+            _labelResult.Visible = false;
             _buttonNext.Enabled = false;
             _buttonFold.Enabled = true;
             _buttonCall.Enabled = true;
@@ -166,6 +167,7 @@ namespace DecisionDealer.View
             if (_decisionMade)
             {
                 _labelResult.Text = _vm.ShowResult(_isCall);
+                _labelResult.Visible = true;
             }
 
             _progressDialog.Hide();
@@ -178,6 +180,7 @@ namespace DecisionDealer.View
             if (_vm.HandStatistics != null)
             {
                 _labelResult.Text = _vm.ShowResult(isCall);
+                _labelResult.Visible = true;
             }
             else
             {
@@ -195,7 +198,6 @@ namespace DecisionDealer.View
         private void DrawPokerTable(Graphics g)
         {
             double sizeFactor = _panelCanvas.Width / (double)Resources.Table.Width;
-            int playerCount = 0;
 
             Font resultFont = new Font("Arial", Round(18 * sizeFactor));
             string result;
@@ -208,61 +210,54 @@ namespace DecisionDealer.View
                 maxEquityDifference = (_vm.HandStatistics.Max(c => c.Equity) - _vm.HandStatistics.Min(c => c.Equity));
             }
 
-            for (int i = 0; i < _vm.Table.Players.Length; i++)
+            for (int i = 0; i < _vm.Table.Players.Count; i++)
             {
-                if (_vm.Table.Players[i] != null)
+                Image firstCardImage;
+                Image secondCardImage;
+
+                if (_vm.Table.Players[i].HoleCards[0] == null)
                 {
+                    firstCardImage = CardImageProvider.GetCardBack();
+                }
+                else
+                {
+                    firstCardImage = CardImageProvider.GetCard(_vm.Table.Players[i].HoleCards[0]);
+                }
 
+                if (_vm.Table.Players[i].HoleCards[1] == null)
+                {
+                    secondCardImage = CardImageProvider.GetCardBack();
+                }
+                else
+                {
+                    secondCardImage = CardImageProvider.GetCard(_vm.Table.Players[i].HoleCards[1]);
+                }
 
-                    Image firstCardImage;
-                    Image secondCardImage;
+                Point seatPosition = GetAbsoluteSeatPosition(_vm.Table.Players[i].SeatNumber - 1);
+                Size cardSize = new Size(Round(firstCardImage.Width * sizeFactor * 0.5), Round(firstCardImage.Height * sizeFactor * 0.5));
 
-                    if (_vm.Table.Players[i].HoleCards[0] == null)
+                g.DrawImage(firstCardImage, seatPosition.X - cardSize.Width, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
+                g.DrawImage(secondCardImage, seatPosition.X, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
+
+                if (_vm.HandStatistics != null && _decisionMade && _vm.DisplayEquities)
+                {
+                    result = Math.Round(_vm.HandStatistics[i].Equity, 2).ToString() + " %";
+
+                    Color rectColor = new Color();
+                    if (_vm.HandStatistics[i].Equity > average)
                     {
-                        firstCardImage = CardImageProvider.GetCardBack();
+                        rectColor = Color.FromArgb(0, 185 + (int)(60 * ((_vm.HandStatistics[i].Equity - average) / maxEquityDifference)), 0);
                     }
                     else
                     {
-                        firstCardImage = CardImageProvider.GetCard(_vm.Table.Players[i].HoleCards[0]);
+                        rectColor = Color.FromArgb(185 + (int)(60 * ((average - _vm.HandStatistics[i].Equity) / maxEquityDifference)), 0, 0);
                     }
 
-                    if (_vm.Table.Players[i].HoleCards[1] == null)
-                    {
-                        secondCardImage = CardImageProvider.GetCardBack();
-                    }
-                    else
-                    {
-                        secondCardImage = CardImageProvider.GetCard(_vm.Table.Players[i].HoleCards[1]);
-                    }
+                    Brush rectBrush = new SolidBrush(rectColor);
 
-                    Point seatPosition = GetAbsoluteSeatPosition(i);
-                    Size cardSize = new Size(Round(firstCardImage.Width * sizeFactor * 0.5), Round(firstCardImage.Height * sizeFactor * 0.5));
-
-                    g.DrawImage(firstCardImage, seatPosition.X - cardSize.Width, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
-                    g.DrawImage(secondCardImage, seatPosition.X, seatPosition.Y - Round(cardSize.Height / 2.0), cardSize.Width, cardSize.Height);
-
-                    if (_vm.HandStatistics != null && _decisionMade && _vm.DisplayEquities)
-                    {
-                        result = Math.Round(_vm.HandStatistics[playerCount].Equity, 2).ToString() + " %";
-
-                        Color rectColor = new Color();
-                        if (_vm.HandStatistics[playerCount].Equity > average)
-                        {
-                            rectColor = Color.FromArgb(0, 185 + (int)(60 * ((_vm.HandStatistics[playerCount].Equity - average) / maxEquityDifference)), 0);
-                        }
-                        else
-                        {
-                            rectColor = Color.FromArgb(185 + (int)(60 * ((average - _vm.HandStatistics[playerCount].Equity) / maxEquityDifference)), 0, 0);
-                        }
-
-                        Brush rectBrush = new SolidBrush(rectColor);
-
-                        g.FillRectangle(rectBrush, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
-                        g.DrawRectangle(Pens.Gray, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
-                        g.DrawString(result, resultFont, Brushes.Black, seatPosition.X - Round(g.MeasureString(result, resultFont).Width / 2.2), seatPosition.Y - Round(resultFont.Size / 1.4));
-                    }
-
-                    playerCount++;
+                    g.FillRectangle(rectBrush, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
+                    g.DrawRectangle(Pens.Gray, seatPosition.X - cardSize.Width, seatPosition.Y - resultFont.Size, cardSize.Width * 2, Round(resultFont.Size * 2));
+                    g.DrawString(result, resultFont, Brushes.Black, seatPosition.X - Round(g.MeasureString(result, resultFont).Width / 2.2), seatPosition.Y - Round(resultFont.Size / 1.4));
                 }
             }
 

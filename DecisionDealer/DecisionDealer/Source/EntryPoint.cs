@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace DecisionDealer
-{
+{   
     public static class EntryPoint
     {
         [STAThread]
@@ -69,7 +69,7 @@ namespace DecisionDealer
             {
                 Debug.WriteLine("ID # " + i);
 
-                if(i < captions.Count)
+                if (i < captions.Count)
                 {
                     Debug.WriteLine(captions[i]);
                 }

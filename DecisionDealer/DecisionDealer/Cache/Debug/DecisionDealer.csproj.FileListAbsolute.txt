@@ -16,3 +16,4 @@ D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\Decisi
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csproj.GenerateResource.Cache
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\ProgressUtility.dll
 D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Bin\Debug\ProgressUtility.pdb
+D:\Learning\GitHub\Global\trunk\DecisionDealer\DecisionDealer\Cache\Debug\DecisionDealer.csprojResolveAssemblyReference.cache
