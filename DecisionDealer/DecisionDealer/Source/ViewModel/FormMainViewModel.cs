@@ -95,7 +95,7 @@ namespace DecisionDealer.ViewModel
 
             if (_round != 0)
             {
-                result = string.Format("Hands correct: {0} %", Math.Round((double)_right / _round * 100.0), 1);
+                result = string.Format("Hands correct: {0} % ({1}/{2})", Math.Round((double)_right / _round * 100.0, 1), _right, _round);
             }
 
             _round++;

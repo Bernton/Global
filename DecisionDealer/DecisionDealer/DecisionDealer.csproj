@@ -62,9 +62,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup>
-    <ApplicationManifest>Properties\t.CSharp.Class</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -141,7 +139,6 @@
   <ItemGroup>
     <Content Include="Resources\Images\AppIcon.png" />
     <Content Include="Resources\Images\CardSprite.gif" />
-    <None Include="Properties\t.CSharp.Class" />
     <None Include="Resources\Images\Table.png" />
   </ItemGroup>
   <ItemGroup>
@@ -169,6 +166,9 @@
       <Project>{63e7f12e-3567-4db3-8fec-2118f52c1e50}</Project>
       <Name>ProgressUtility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Cache\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

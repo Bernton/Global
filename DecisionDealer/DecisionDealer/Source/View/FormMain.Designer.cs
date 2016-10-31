@@ -70,7 +70,7 @@
             this._labelCorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._labelCorrect.AutoSize = true;
             this._labelCorrect.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._labelCorrect.Location = new System.Drawing.Point(852, 651);
+            this._labelCorrect.Location = new System.Drawing.Point(781, 652);
             this._labelCorrect.Name = "_labelCorrect";
             this._labelCorrect.Size = new System.Drawing.Size(0, 21);
             this._labelCorrect.TabIndex = 5;
@@ -103,7 +103,7 @@
             // 
             this._textBoxFrequency.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this._textBoxFrequency.Font = new System.Drawing.Font("Times New Roman", 14.25F);
-            this._textBoxFrequency.Location = new System.Drawing.Point(746, 643);
+            this._textBoxFrequency.Location = new System.Drawing.Point(675, 647);
             this._textBoxFrequency.Name = "_textBoxFrequency";
             this._textBoxFrequency.Size = new System.Drawing.Size(100, 29);
             this._textBoxFrequency.TabIndex = 8;
@@ -116,7 +116,7 @@
             this._labelShowFreq.AutoSize = true;
             this._labelShowFreq.BackColor = System.Drawing.Color.Transparent;
             this._labelShowFreq.Font = new System.Drawing.Font("Times New Roman", 14.25F);
-            this._labelShowFreq.Location = new System.Drawing.Point(450, 647);
+            this._labelShowFreq.Location = new System.Drawing.Point(379, 651);
             this._labelShowFreq.Name = "_labelShowFreq";
             this._labelShowFreq.Size = new System.Drawing.Size(290, 21);
             this._labelShowFreq.TabIndex = 9;
