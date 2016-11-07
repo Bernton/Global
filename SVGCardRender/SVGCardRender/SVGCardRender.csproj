@@ -89,6 +89,7 @@
   <ItemGroup>
     <None Include="Resources\CardSprite_SpecialColor.png" />
     <None Include="Resources\CardSprite_SpecialColor_HighRes.png" />
+    <None Include="Resources\CardSprite_SpecialColor_UltraHighRes.png" />
     <Content Include="Resources\Vertical4\gifs\blackJoker.gif" />
     <Content Include="Resources\Vertical4\gifs\blueBack.gif" />
     <Content Include="Resources\Vertical4\gifs\club10.gif" />
