@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04BF32E5-EB7A-4C20-96F2-E386853302F0}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SVGCardRender</RootNamespace>
+    <AssemblyName>SVGCardRender</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Svg, Version=2.2.1.1459, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.2.2.1\lib\net35\Svg.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CardImageProvider.cs" />
+    <Compile Include="FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FormMain.resx">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\CardSprite_SpecialColor.png" />
+    <None Include="Resources\CardSprite_SpecialColor_HighRes.png" />
+    <Content Include="Resources\Vertical4\gifs\blackJoker.gif" />
+    <Content Include="Resources\Vertical4\gifs\blueBack.gif" />
+    <Content Include="Resources\Vertical4\gifs\club10.gif" />
+    <Content Include="Resources\Vertical4\gifs\club2.gif" />
+    <Content Include="Resources\Vertical4\gifs\club3.gif" />
+    <Content Include="Resources\Vertical4\gifs\club4.gif" />
+    <Content Include="Resources\Vertical4\gifs\club5.gif" />
+    <Content Include="Resources\Vertical4\gifs\club6.gif" />
+    <Content Include="Resources\Vertical4\gifs\club7.gif" />
+    <Content Include="Resources\Vertical4\gifs\club8.gif" />
+    <Content Include="Resources\Vertical4\gifs\club9.gif" />
+    <Content Include="Resources\Vertical4\gifs\clubAce.gif" />
+    <Content Include="Resources\Vertical4\gifs\clubJack.gif" />
+    <Content Include="Resources\Vertical4\gifs\clubKing.gif" />
+    <Content Include="Resources\Vertical4\gifs\clubQueen.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond10.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond2.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond3.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond4.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond5.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond6.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond7.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond8.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamond9.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamondAce.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamondJack.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamondKing.gif" />
+    <Content Include="Resources\Vertical4\gifs\diamondQueen.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart10.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart2.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart3.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart4.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart5.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart6.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart7.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart8.gif" />
+    <Content Include="Resources\Vertical4\gifs\heart9.gif" />
+    <Content Include="Resources\Vertical4\gifs\heartAce.gif" />
+    <Content Include="Resources\Vertical4\gifs\heartJack.gif" />
+    <Content Include="Resources\Vertical4\gifs\heartKing.gif" />
+    <Content Include="Resources\Vertical4\gifs\heartQueen.gif" />
+    <Content Include="Resources\Vertical4\gifs\redBack.gif" />
+    <Content Include="Resources\Vertical4\gifs\redJoker.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade10.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade2.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade3.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade4.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade5.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade6.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade7.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade8.gif" />
+    <Content Include="Resources\Vertical4\gifs\spade9.gif" />
+    <Content Include="Resources\Vertical4\gifs\spadeAce.gif" />
+    <Content Include="Resources\Vertical4\gifs\spadeJack.gif" />
+    <Content Include="Resources\Vertical4\gifs\spadeKing.gif" />
+    <Content Include="Resources\Vertical4\gifs\spadeQueen.gif" />
+    <Content Include="Resources\Vertical4\gifs\sprite.gif" />
+    <Content Include="Resources\Vertical4\pngs\blackJoker.png" />
+    <Content Include="Resources\Vertical4\pngs\blueBack.png" />
+    <Content Include="Resources\Vertical4\pngs\club10.png" />
+    <Content Include="Resources\Vertical4\pngs\club2.png" />
+    <Content Include="Resources\Vertical4\pngs\club3.png" />
+    <Content Include="Resources\Vertical4\pngs\club4.png" />
+    <Content Include="Resources\Vertical4\pngs\club5.png" />
+    <Content Include="Resources\Vertical4\pngs\club6.png" />
+    <Content Include="Resources\Vertical4\pngs\club7.png" />
+    <Content Include="Resources\Vertical4\pngs\club8.png" />
+    <Content Include="Resources\Vertical4\pngs\club9.png" />
+    <Content Include="Resources\Vertical4\pngs\clubAce.png" />
+    <Content Include="Resources\Vertical4\pngs\clubJack.png" />
+    <Content Include="Resources\Vertical4\pngs\clubKing.png" />
+    <Content Include="Resources\Vertical4\pngs\clubQueen.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond10.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond2.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond3.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond4.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond5.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond6.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond7.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond8.png" />
+    <Content Include="Resources\Vertical4\pngs\diamond9.png" />
+    <Content Include="Resources\Vertical4\pngs\diamondAce.png" />
+    <Content Include="Resources\Vertical4\pngs\diamondJack.png" />
+    <Content Include="Resources\Vertical4\pngs\diamondKing.png" />
+    <Content Include="Resources\Vertical4\pngs\diamondQueen.png" />
+    <Content Include="Resources\Vertical4\pngs\heart10.png" />
+    <Content Include="Resources\Vertical4\pngs\heart2.png" />
+    <Content Include="Resources\Vertical4\pngs\heart3.png" />
+    <Content Include="Resources\Vertical4\pngs\heart4.png" />
+    <Content Include="Resources\Vertical4\pngs\heart5.png" />
+    <Content Include="Resources\Vertical4\pngs\heart6.png" />
+    <Content Include="Resources\Vertical4\pngs\heart7.png" />
+    <Content Include="Resources\Vertical4\pngs\heart8.png" />
+    <Content Include="Resources\Vertical4\pngs\heart9.png" />
+    <Content Include="Resources\Vertical4\pngs\heartAce.png" />
+    <Content Include="Resources\Vertical4\pngs\heartJack.png" />
+    <Content Include="Resources\Vertical4\pngs\heartKing.png" />
+    <Content Include="Resources\Vertical4\pngs\heartQueen.png" />
+    <Content Include="Resources\Vertical4\pngs\redBack.png" />
+    <Content Include="Resources\Vertical4\pngs\redJoker.png" />
+    <Content Include="Resources\Vertical4\pngs\spade10.png" />
+    <Content Include="Resources\Vertical4\pngs\spade2.png" />
+    <Content Include="Resources\Vertical4\pngs\spade3.png" />
+    <Content Include="Resources\Vertical4\pngs\spade4.png" />
+    <Content Include="Resources\Vertical4\pngs\spade5.png" />
+    <Content Include="Resources\Vertical4\pngs\spade6.png" />
+    <Content Include="Resources\Vertical4\pngs\spade7.png" />
+    <Content Include="Resources\Vertical4\pngs\spade8.png" />
+    <Content Include="Resources\Vertical4\pngs\spade9.png" />
+    <Content Include="Resources\Vertical4\pngs\spadeAce.png" />
+    <Content Include="Resources\Vertical4\pngs\spadeJack.png" />
+    <Content Include="Resources\Vertical4\pngs\spadeKing.png" />
+    <Content Include="Resources\Vertical4\pngs\spadeQueen.png" />
+    <Content Include="Resources\Vertical4\pngs\sprite.png" />
+    <Content Include="Resources\Vertical4\sprite.svg" />
+    <Content Include="Resources\Vertical4\svgs\blackJoker.svg" />
+    <Content Include="Resources\Vertical4\svgs\blueBack.svg" />
+    <Content Include="Resources\Vertical4\svgs\club10.svg" />
+    <Content Include="Resources\Vertical4\svgs\club2.svg" />
+    <Content Include="Resources\Vertical4\svgs\club3.svg" />
+    <Content Include="Resources\Vertical4\svgs\club4.svg" />
+    <Content Include="Resources\Vertical4\svgs\club5.svg" />
+    <Content Include="Resources\Vertical4\svgs\club6.svg" />
+    <Content Include="Resources\Vertical4\svgs\club7.svg" />
+    <Content Include="Resources\Vertical4\svgs\club8.svg" />
+    <Content Include="Resources\Vertical4\svgs\club9.svg" />
+    <Content Include="Resources\Vertical4\svgs\clubAce.svg" />
+    <Content Include="Resources\Vertical4\svgs\clubJack.svg" />
+    <Content Include="Resources\Vertical4\svgs\clubKing.svg" />
+    <Content Include="Resources\Vertical4\svgs\clubQueen.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond10.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond2.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond3.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond4.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond5.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond6.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond7.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond8.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamond9.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamondAce.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamondJack.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamondKing.svg" />
+    <Content Include="Resources\Vertical4\svgs\diamondQueen.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart10.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart2.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart3.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart4.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart5.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart6.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart7.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart8.svg" />
+    <Content Include="Resources\Vertical4\svgs\heart9.svg" />
+    <Content Include="Resources\Vertical4\svgs\heartAce.svg" />
+    <Content Include="Resources\Vertical4\svgs\heartJack.svg" />
+    <Content Include="Resources\Vertical4\svgs\heartKing.svg" />
+    <Content Include="Resources\Vertical4\svgs\heartQueen.svg" />
+    <Content Include="Resources\Vertical4\svgs\redBack.svg" />
+    <Content Include="Resources\Vertical4\svgs\redJoker.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade10.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade2.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade3.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade4.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade5.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade6.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade7.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade8.svg" />
+    <Content Include="Resources\Vertical4\svgs\spade9.svg" />
+    <Content Include="Resources\Vertical4\svgs\spadeAce.svg" />
+    <Content Include="Resources\Vertical4\svgs\spadeJack.svg" />
+    <Content Include="Resources\Vertical4\svgs\spadeKing.svg" />
+    <Content Include="Resources\Vertical4\svgs\spadeQueen.svg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
