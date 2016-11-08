@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace DecisionDealer
@@ -65,19 +67,24 @@ namespace DecisionDealer
 
         public static void ReportSections()
         {
+            StringBuilder builder = new StringBuilder();
+
             for (int i = 0; i < totals.Count; i++)
             {
-                Debug.WriteLine("ID # " + i);
+                builder.AppendLine("ID # " + i);
 
                 if (i < captions.Count)
                 {
-                    Debug.WriteLine(captions[i]);
+                    builder.AppendLine(captions[i]);
                 }
 
-                Debug.WriteLine("Total " + totals[i]);
-                Debug.WriteLine("SS " + counts[i]);
-                Debug.WriteLine("Avg. " + (totals[i] / (double)counts[i]) + " ms\n\n");
+                builder.AppendLine("Total " + totals[i]);
+                builder.AppendLine("SS " + counts[i]);
+                builder.AppendLine("Avg. " + (totals[i] / (double)counts[i]) + " ms\n\n\n");
             }
+
+            File.WriteAllText("LoopSpeed.txt", builder.ToString());
+            Debug.WriteLine(builder.ToString());
         }
 
         #endregion

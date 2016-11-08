@@ -31,7 +31,7 @@ namespace DecisionDealer.Model
 
         #region Methods
 
-        public HandStatistic[] Simulate(Card[,] holeCards)
+        public HandStatistic[] Simulate(Card[,] holeCards, Card[] communityCards)
         {
             List<int> randomHandIndexes = new List<int>();
 
@@ -44,7 +44,7 @@ namespace DecisionDealer.Model
             }
 
             HandStatistic[] results = new HandStatistic[holeCards.GetLength(0)];
-            Card[] deck = GenerateDeck(holeCards);
+            Card[] deck = GenerateDeck(holeCards, communityCards);
 
             for (int i = 0; i < results.Length; i++)
             {
@@ -66,16 +66,32 @@ namespace DecisionDealer.Model
                 }
             }
 
+            Card[] currentCommunityCards;
+            int randomCommunity = Math.Abs(communityCards.Length - 5);
+
             for (int i = 0; i < Iterations; i++)
             {
-                randomCards = GetRandomCards(deck, randomCardIndexes.Count + 5);
+                randomCards = GetRandomCards(deck, randomCardIndexes.Count + randomCommunity);
 
                 for (int playerI = 0; playerI < randomCardIndexes.Count; playerI++)
                 {
-                    holeCards[randomCardIndexes[playerI][0], randomCardIndexes[playerI][1]] = randomCards[Math.Abs(playerI - randomCardIndexes.Count) + 4];
+                    holeCards[randomCardIndexes[playerI][0], randomCardIndexes[playerI][1]] = randomCards[playerI + randomCommunity];
                 }
 
-                int[] winners = PokerEngine.GetWinnerValueIndexes(holeCards, randomCards.GetSubArray(0, 5));
+                Card[] randomCommunityCards = randomCards.GetSubArray(0, randomCommunity);
+                currentCommunityCards = new Card[5];
+
+                for (int communityI = 0; communityI < communityCards.Length; communityI++)
+                {
+                    currentCommunityCards[communityI] = communityCards[communityI];
+                }
+
+                for (int randomI = 0; randomI < randomCommunity; randomI++)
+                {
+                    currentCommunityCards[communityCards.Length + randomI] = randomCommunityCards[randomI];
+                }
+
+                int[] winners = PokerEngine.GetWinnerValueIndexes(holeCards, currentCommunityCards);
 
                 if (winners.Length == 1)
                 {
@@ -135,7 +151,7 @@ namespace DecisionDealer.Model
             return results;
         }
 
-        private Card[] GenerateDeck(Card[,] deadCards)
+        private Card[] GenerateDeck(Card[,] holeCards, Card[] communityCards)
         {
             List<Card> cards = new List<Card>();
 
@@ -147,14 +163,23 @@ namespace DecisionDealer.Model
                 }
             }
 
-            for (int playerI = 0; playerI < deadCards.GetLength(0); playerI++)
+            List<Card> deadCards = new List<Card>();
+
+            foreach (Card card in holeCards)
             {
-                for (int cardI = 0; cardI < deadCards.GetLength(1); cardI++)
+                deadCards.Add(card);
+            }
+
+            foreach (Card card in communityCards)
+            {
+                deadCards.Add(card);
+            }
+
+            foreach (Card card in deadCards)
+            {
+                if (card != null)
                 {
-                    if (deadCards[playerI, cardI] != null)
-                    {
-                        cards.Remove(cards.First(c => (int)c.Suit * 13 + (int)c.Value == (int)deadCards[playerI, cardI].Suit * 13 + (int)deadCards[playerI, cardI].Value));
-                    }
+                    cards.Remove(cards.First(c => (int)c.Suit * 13 + (int)c.Value == (int)card.Suit * 13 + (int)card.Value));
                 }
             }
 

@@ -63,6 +63,24 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Custom|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug Custom\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CUSTOM</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release Custom|AnyCPU'">
+    <OutputPath>bin\Release Custom\</OutputPath>
+    <DefineConstants>TRACE;CUSTOM</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -76,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\Model\Buffer.cs" />
     <Compile Include="Source\Model\Extensions.cs" />
     <Compile Include="Source\Model\Card.cs" />
     <Compile Include="Source\Model\CardImageProvider.cs" />
@@ -110,6 +129,8 @@
     </Compile>
     <Compile Include="Source\EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\View\FormProgressDialog.cs" />
+    <Compile Include="Source\View\ProgressDialog.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -122,6 +143,9 @@
     </Compile>
     <EmbeddedResource Include="Source\View\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Source\View\FormProgressDialog.resx">
+      <DependentUpon>FormProgressDialog.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -139,6 +163,60 @@
   <ItemGroup>
     <Content Include="Resources\Images\AppIcon.png" />
     <Content Include="Resources\Images\CardSprite.gif" />
+    <None Include="Resources\Images\CardSprite_SpecialColor_HighRes.png" />
+    <None Include="Resources\Images\Cards\Spade14.png" />
+    <None Include="Resources\Images\Cards\Spade13.png" />
+    <None Include="Resources\Images\Cards\Spade12.png" />
+    <None Include="Resources\Images\Cards\Spade11.png" />
+    <None Include="Resources\Images\Cards\Spade10.png" />
+    <None Include="Resources\Images\Cards\Spade9.png" />
+    <None Include="Resources\Images\Cards\Spade8.png" />
+    <None Include="Resources\Images\Cards\Spade7.png" />
+    <None Include="Resources\Images\Cards\Spade6.png" />
+    <None Include="Resources\Images\Cards\Spade5.png" />
+    <None Include="Resources\Images\Cards\Spade4.png" />
+    <None Include="Resources\Images\Cards\Spade3.png" />
+    <None Include="Resources\Images\Cards\Spade2.png" />
+    <None Include="Resources\Images\Cards\Heart14.png" />
+    <None Include="Resources\Images\Cards\Heart13.png" />
+    <None Include="Resources\Images\Cards\Heart12.png" />
+    <None Include="Resources\Images\Cards\Heart11.png" />
+    <None Include="Resources\Images\Cards\Heart10.png" />
+    <None Include="Resources\Images\Cards\Heart9.png" />
+    <None Include="Resources\Images\Cards\Heart8.png" />
+    <None Include="Resources\Images\Cards\Heart7.png" />
+    <None Include="Resources\Images\Cards\Heart6.png" />
+    <None Include="Resources\Images\Cards\Heart5.png" />
+    <None Include="Resources\Images\Cards\Heart4.png" />
+    <None Include="Resources\Images\Cards\Heart3.png" />
+    <None Include="Resources\Images\Cards\Heart2.png" />
+    <None Include="Resources\Images\Cards\Diamond14.png" />
+    <None Include="Resources\Images\Cards\Diamond13.png" />
+    <None Include="Resources\Images\Cards\Diamond12.png" />
+    <None Include="Resources\Images\Cards\Diamond11.png" />
+    <None Include="Resources\Images\Cards\Diamond10.png" />
+    <None Include="Resources\Images\Cards\Diamond9.png" />
+    <None Include="Resources\Images\Cards\Diamond8.png" />
+    <None Include="Resources\Images\Cards\Diamond7.png" />
+    <None Include="Resources\Images\Cards\Diamond6.png" />
+    <None Include="Resources\Images\Cards\Diamond5.png" />
+    <None Include="Resources\Images\Cards\Diamond4.png" />
+    <None Include="Resources\Images\Cards\Diamond3.png" />
+    <None Include="Resources\Images\Cards\Diamond2.png" />
+    <None Include="Resources\Images\Cards\Club14.png" />
+    <None Include="Resources\Images\Cards\Club13.png" />
+    <None Include="Resources\Images\Cards\Club12.png" />
+    <None Include="Resources\Images\Cards\Club11.png" />
+    <None Include="Resources\Images\Cards\Club10.png" />
+    <None Include="Resources\Images\Cards\Club9.png" />
+    <None Include="Resources\Images\Cards\Club8.png" />
+    <None Include="Resources\Images\Cards\Club7.png" />
+    <None Include="Resources\Images\Cards\Club6.png" />
+    <None Include="Resources\Images\Cards\Club5.png" />
+    <None Include="Resources\Images\Cards\Club4.png" />
+    <None Include="Resources\Images\Cards\Club3.png" />
+    <None Include="Resources\Images\Cards\Club2.png" />
+    <None Include="Resources\Images\Cards\CardBack.gif" />
     <None Include="Resources\Images\Table.png" />
   </ItemGroup>
   <ItemGroup>
@@ -160,12 +238,6 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ProgressUtility\ProgressUtility.csproj">
-      <Project>{63e7f12e-3567-4db3-8fec-2118f52c1e50}</Project>
-      <Name>ProgressUtility</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Cache\" />

@@ -126,6 +126,11 @@ namespace DecisionDealer.ViewModel
             PokerPlayer[] players = Table.Players.Where(c => c != null).ToArray();
             Card[,] holeCards = new Card[players.Length, 2];
 
+            if(random.Next(2) == 1)
+            {
+                Table.RevealCommunityCards(random.Next(3, 5));
+            }
+
             for (int i = 0; i < players.Length; i++)
             {
                 Card[] clonedCards = (Card[])players[i].HoleCards.Clone();
@@ -135,7 +140,7 @@ namespace DecisionDealer.ViewModel
 
             Task.Factory.StartNew(() =>
             {
-                HandStatistics = simulator.Simulate(holeCards);
+                HandStatistics = simulator.Simulate(holeCards, Table.CommunityCards.ToArray());
 
                 EntryPoint.SetCaption(0, "GetHandValue()");
                 EntryPoint.ReportSections();
