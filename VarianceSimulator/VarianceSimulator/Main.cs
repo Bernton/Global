@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VarianceSimulator
 {
     public partial class Main : Form
     {
-        private Random _random = new Random();
-        private List<double> _values = new List<double>();
+        private readonly RandomGenerator _random = new RandomGenerator();
+        private readonly List<double> _values = new List<double>();
 
         public Main()
         {
@@ -66,7 +62,7 @@ namespace VarianceSimulator
             for (int i = 0; i < 11; i++)
             {
                 int offSet = 0;
-                
+
                 int valueY = (int)(peak - ((peak / 5.0 * i)));
                 string displayed = valueY + " $";
 
@@ -94,33 +90,33 @@ namespace VarianceSimulator
 
         private void OnButtonRollClick(object sender, EventArgs e)
         {
-            int interation;
-            int possibilies;
-            double edge;
-
-            if (int.TryParse(_textBoxRollAmount.Text, out interation) &&
-                int.TryParse(_textBoxPossibilies.Text, out possibilies) &&
-                double.TryParse(_textBoxEdge.Text, out edge))
+            if (int.TryParse(_textBoxRollAmount.Text, out int interation) &&
+                int.TryParse(_textBoxPossibilies.Text, out int possibilies) &&
+                double.TryParse(_textBoxEdge.Text, out double edge))
             {
                 for (int i = 0; i < interation; i++)
                 {
-                    Roll(possibilies, edge);
+                    Roll(possibilies, edge, 1);
                 }
+
+                _chart.Invalidate();
             }
         }
 
-        private void Roll(int possibilies, double edge)
+        private void Roll(int possibilies, double edge, double bet)
         {
-            if (RandomNumber.GetNextDouble() * (double)possibilies * (double)(1.0 - (edge / 100.0)) < 1.0)
-            {
-                _values.Add(_values[_values.Count - 1] + (possibilies - 1));
-            }
-            else
-            {
-                _values.Add(_values[_values.Count - 1] - 1);
-            }
+            double randomNumber = _random.Next();
 
-            _chart.Invalidate();
+            double edgeRatio = 1.0 + (edge / 100.0);
+            double chance = edgeRatio / possibilies;
+
+            bool isHit = randomNumber < chance;
+
+            double lastSum = _values[_values.Count - 1];
+            double winning = isHit ? possibilies * bet : 0;
+            double newSum = lastSum + winning - bet;
+
+            _values.Add(newSum);
         }
     }
 }

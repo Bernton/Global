@@ -56,7 +56,7 @@
             this._textBoxRollAmount.Name = "_textBoxRollAmount";
             this._textBoxRollAmount.Size = new System.Drawing.Size(103, 20);
             this._textBoxRollAmount.TabIndex = 4;
-            this._textBoxRollAmount.Text = "100";
+            this._textBoxRollAmount.Text = "1";
             // 
             // _labelPossibilies
             // 
@@ -75,7 +75,7 @@
             this._textBoxPossibilies.Name = "_textBoxPossibilies";
             this._textBoxPossibilies.Size = new System.Drawing.Size(103, 20);
             this._textBoxPossibilies.TabIndex = 6;
-            this._textBoxPossibilies.Text = "128";
+            this._textBoxPossibilies.Text = "2";
             // 
             // _labelEdge
             // 
